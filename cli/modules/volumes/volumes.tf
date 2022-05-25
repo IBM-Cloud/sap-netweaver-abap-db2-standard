@@ -7,7 +7,7 @@ resource "ibm_is_volume" "vol1" {
   profile	= "10iops-tier"
   zone		= var.ZONE
   resource_group = data.ibm_resource_group.group.id
-  capacity	= local.VOL1
+  capacity	= var.VOL1
 }
 
 resource "ibm_is_volume" "vol2" {
@@ -15,15 +15,14 @@ resource "ibm_is_volume" "vol2" {
   profile	= "10iops-tier"
   zone		= var.ZONE
   resource_group = data.ibm_resource_group.group.id
-  capacity	= local.VOL2
+  capacity	= var.VOL2
 }
 
 resource "ibm_is_volume" "vol3" {
   name		= "${var.HOSTNAME}-vol3"
   profile	= "10iops-tier"
   zone		= var.ZONE
-  resource_group = data.ibm_resource_group.group.id
-  capacity	= local.VOL3
+  capacity	= var.VOL3
 }
 
 resource "ibm_is_volume" "vol4" {
@@ -31,7 +30,7 @@ resource "ibm_is_volume" "vol4" {
   profile	= "10iops-tier"
   zone		= var.ZONE
   resource_group = data.ibm_resource_group.group.id
-  capacity	= local.VOL4
+  capacity	= var.VOL4
 }
 
 resource "ibm_is_volume" "vol5" {
@@ -39,7 +38,7 @@ resource "ibm_is_volume" "vol5" {
   profile	= "10iops-tier"
   zone		= var.ZONE
   resource_group = data.ibm_resource_group.group.id
-  capacity	= local.VOL5
+  capacity	= var.VOL5
 }
 
 output "volumes_list" {

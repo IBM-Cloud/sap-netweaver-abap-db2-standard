@@ -32,14 +32,12 @@ Edit your VPC, Subnet, Security group, Hostname, Profile, Image, SSH Keys and st
 REGION			 = "eu-de"
 ZONE			= "eu-de-2"
 VPC			= "sap"                         # EXISTING VPC name
-SECURITYGROUP	= "sap-securitygroup"   # EXISTING Security group name
+SECURITY_GROUP	= "sap-securitygroup"   # EXISTING Security group name
 SUBNET			= "sap-subnet"               # EXISTING Subnet name
-ADD_OPEN_PORTS = "no"                 # To create new open port/s on the EXISTING SECURITYGROUP, choose 'yes' or 'no' as options
-OPEN_PORT_MINIMUM = "3200"            # This variables will be created only if ADD_OPEN_PORTS = "yes"
-OPEN_PORT_MAXIMUM = "3200"            # This variables will be created only if ADD_OPEN_PORTS = "yes"
+RESOURCE_GROUP  = "wes-automation"           # EXISTING Resource Group
 HOSTNAME		= "db2sapm1"
 PROFILE			= "bx2-4x16"
-IMAGE			= "ibm-redhat-7-6-amd64-sap-applications-x"
+IMAGE			= "ibm-redhat-7-6-amd64-sap-applications-3"
 SSH_KEYS		= [ "r010-57bfc315-f9e5-46bf-bf61-d87a24a9ce7a" , "r010-3fcd9fe7-d4a7-41ce-8bb3-d96e936b2c7e" ]
 VOL1			= "32"
 VOL2			= "32"
@@ -56,10 +54,8 @@ REGION | The cloud region where to deploy the solution. <br /> The regions and z
 ZONE | The cloud zone where to deploy the solution. <br /> Sample value: eu-de-2.
 VPC | EXISTING VPC name. The list of VPCs is available [here](https://cloud.ibm.com/vpc-ext/network/vpcs)
 SUBNET | EXISTING Subnet name. The list of Subnets is available [here](https://cloud.ibm.com/vpc-ext/network/subnets). 
-SECURITYGROUP | EXISTING Security group name. The list of Security Groups is available [here](https://cloud.ibm.com/vpc-ext/network/securityGroups). 
-ADD_OPEN_PORTS | To create new open port/s on the EXISTING SECURITYGROUP, choose 'yes' or 'no' as options.
-OPEN_PORT_MINIMUM | (Required, Integer) The TCP port range that includes the minimum bound. Valid values are from 1 to 65535.<br /> Default value: 3200
-OPEN_PORT_MAXIMUM | (Required, Integer) The TCP port range that includes the maximum bound. Valid values are from 1 to 65535.<br /> Default value: 3200.
+SECURITY_GROUP | EXISTING Security group name. The list of Security Groups is available [here](https://cloud.ibm.com/vpc-ext/network/securityGroups).
+RESOURCE_GROUP | EXISTING Resource Group name. The list of Resource Groups is available [here](https://cloud.ibm.com/account/resource-groups).
 HOSTNAME | The Hostname for the VSI. The hostname must have up to 13 characters as required by SAP. For more information on rules regarding hostnames for SAP systems, check SAP Note *611361 - Hostnames of SAP ABAP Platform servers*
 PROFILE |  The profile used for the VSI. A list of profiles is available [here](https://cloud.ibm.com/docs/vpc?topic=vpc-profiles) <br /> Default value: "bx2-4x16"
 IMAGE | The OS image used for the VSI. A list of images is available [here](https://cloud.ibm.com/docs/vpc?topic=vpc-about-images).<br /> Default value: ibm-redhat-7-6-amd64-sap-applications-3
@@ -114,7 +110,7 @@ kit_db2client_dir | Path to DB2 LUW 10.5 FP7SAP2 RDBMS Client dir | The archive 
 **Obs***: <br />
 - Sensitive - The variable value is not displayed in your tf files details after terrafrorm plan&apply commands.<br />
 - VOL[number] | The sizes for the disks in GB that are to be attached to the VSI and used by SAP.<br />
-- The following variables should be the same like the bastion ones: REGION, ZONE, VPC, SUBNET, SECURITYGROUP.
+- The following variables should be the same like the bastion ones: REGION, ZONE, VPC, SUBNET, RESOURCE_GROUP, SECURITY_GROUP.
 
 ## VPC Configuration
 
@@ -158,7 +154,7 @@ terraform plan --out plan1
 For apply phase:
 
 ```shell
-terraform apply
+terraform apply "plan1"
 ```
 
 For destroy:
@@ -172,4 +168,6 @@ terraform destroy
 
 ### Related links:
 
-- [See how to create a BASTION/STORAGE VSI for SAP in IBM Schematics](https://github.ibm.com/workload-eng-services/SAP/tree/dev/ibm-schematics/sapbastionsetup-sch)
+- [How to create a BASTION/STORAGE VSI for SAP in IBM Schematics](https://github.com/IBM-Cloud/sap-bastion-setup)
+- [Securely Access Remote Instances with a Bastion Host](https://www.ibm.com/cloud/blog/tutorial-securely-access-remote-instances-with-a-bastion-host)
+- [VPNs for VPC overview: Site-to-site gateways and Client-to-site servers.](https://cloud.ibm.com/docs/vpc?topic=vpc-vpn-overview)

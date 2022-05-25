@@ -17,50 +17,41 @@ This example and the terraform modules only seek to implement a 'reasonable' set
 ## Installation media
 The SAP installation media used for this deployment is the default one for **SAP Netweaver 7.5** with **DB2 10.5FP7** available at SAP Support Portal under *INSTALLATION AND UPGRADE* area and it has to be provided manually in the input parameter file.
 
-## IBM Cloud API Key
-For the script configuration add your IBM Cloud API Key variable under IBM SCHEMATICS,  "SETTINGS" menu, editing the variable "ibmcloud_api_key" and  using sensitive option.
-
 ## VSI Configuration
-The VSI is configured with  Red Hat Enterprise Linux 7.x for SAP Applications (amd64), it has a minimal of two SSH keys configured to be accessed by the root user and five storage volumes as described below  that need to be filled in under the "SETTINGS" menu, variables fields in IBM Schematics.
+The VSI is deployed with Red Hat Enterprise Linux 7.6 for SAP Applications (amd64). The SSH keys are configured to allow root user access. The following storage volumes are creating during the provisioning:
 
+SAP NetWeaver-ABAP-DB2-standard VSI Disks:
+- 1 x 32 GB disk with 10 IOPS / GB - DATA
+- 1x 32 GB disk with 10 IOPS / GB - SWAP
+- 1 x 64 GB disk with 10 IOPS / GB - DATA
+- 1 x 128 GB disk with 10 IOPS / GB - DATA
+- 1 x 256 GB disk with 10 IOPS / GB - DATA
 
-## Input parameter file
+## IBM Cloud API Key
+The IBM Cloud API Key should be provided as input value of type sensitive for "ibmcloud_api_key" variable, in `IBM Schematics -> Workspaces -> <Workspace name> -> Settings` menu.
+The IBM Cloud API Key can be created [here](https://cloud.ibm.com/iam/apikeys).
 
-The solution is configured by editing the variables in your Schematics workspace.
-Edit your VPC, Subnet, Security group, Hostname, Profile, Image, SSH Keys and your SAP system configuration variables, starting with minimal recommended disk sizes like so:
+## Input parameters
 
+The following parameters can be set in the Schematics workspace: VPC, Subnet, Security group, Resource group, Hostname, Profile, Image, SSH Keys and your SAP system configuration variables, as below:
 
 **VSI input parameters:**
 
 Parameter | Description
 ----------|------------
 ibmcloud_api_key | IBM Cloud API key (Sensitive* value).
-private_ssh_key | Input id_rsa private key content (Sensitive* value).
-SSH_KEYS | List of SSH Keys IDs that are allowed to SSH as root to the VSI. Can contain one or more IDs. The list of SSH Keys is available [here](https://cloud.ibm.com/vpc-ext/compute/sshKeys). <br /> Sample input (use your own SSH IDS from IBM Cloud):<br /> [ "r010-57bfc315-f9e5-46bf-bf61-d87a24a9ce7a" , "r010-3fcd9fe7-d4a7-41ce-8bb3-d96e936b2c7e" ]
-BASTION_FLOATING_IP | Input the FLOATING IP from the Bastion Server.
+private_ssh_key | id_rsa private key content (Sensitive* value).
+SSH_KEYS | List of SSH Keys UUIDs that are allowed to SSH as root to the VSI. Can contain one or more IDs. The list of SSH Keys is available [here](https://cloud.ibm.com/vpc-ext/compute/sshKeys). <br /> Sample input (use your own SSH UUIDs from IBM Cloud):<br /> [ "r010-57bfc315-f9e5-46bf-bf61-d87a24a9ce7a" , "r010-3fcd9fe7-d4a7-41ce-8bb3-d96e936b2c7e" ]
+BASTION_FLOATING_IP | The FLOATING IP from the Bastion Server.
+RESOURCE_GROUP | An EXISTING  Resource Group for VSIs and Volumes resources. <br /> Default value: "Default". The list of Resource Groups is available [here](https://cloud.ibm.com/account/resource-groups).
 REGION | The cloud region where to deploy the solution. <br /> The regions and zones for VPC are listed [here](https://cloud.ibm.com/docs/containers?topic=containers-regions-and-zones#zones-vpc). <br /> Review supported locations in IBM Cloud Schematics [here](https://cloud.ibm.com/docs/schematics?topic=schematics-locations).<br /> Sample value: eu-de.
 ZONE | The cloud zone where to deploy the solution. <br /> Sample value: eu-de-2.
 VPC | EXISTING VPC name. The list of VPCs is available [here](https://cloud.ibm.com/vpc-ext/network/vpcs)
 SUBNET | EXISTING Subnet name. The list of Subnets is available [here](https://cloud.ibm.com/vpc-ext/network/subnets). 
-SECURITYGROUP | EXISTING Security group name. The list of Security Groups is available [here](https://cloud.ibm.com/vpc-ext/network/securityGroups). 
-ADD_OPEN_PORTS | To create new open port/s on the EXISTING SECURITYGROUP, choose 'yes' or 'no' as options.
-OPEN_PORT_MINIMUM | (Required, Integer) The TCP port range that includes the minimum bound. Valid values are from 1 to 65535.<br /> Default value: 3200
-OPEN_PORT_MAXIMUM | (Required, Integer) The TCP port range that includes the maximum bound. Valid values are from 1 to 65535.<br /> Default value: 3200.
+SECURITY_GROUP | EXISTING Security group name. The list of Security Groups is available [here](https://cloud.ibm.com/vpc-ext/network/securityGroups). 
 HOSTNAME | The Hostname for the VSI. The hostname must have up to 13 characters as required by SAP. For more information on rules regarding hostnames for SAP systems, check SAP Note *611361 - Hostnames of SAP ABAP Platform servers*
 PROFILE |  The profile used for the VSI. A list of profiles is available [here](https://cloud.ibm.com/docs/vpc?topic=vpc-profiles) <br /> Default value: "bx2-4x16"
-IMAGE | The OS image used for the VSI. A list of images is available [here](https://cloud.ibm.com/docs/vpc?topic=vpc-about-images).<br /> Default value: ibm-redhat-7-6-amd64-sap-applications-2
-VOL1 [number] | Volume 1 Size*. <br /> Default value: 32 GB.
-VOL2 [number] | Volume 2 Size*. <br /> Default value: 32 GB.
-VOL3 [number] | Volume 3 Size*. <br /> Default value: 64 GB.
-VOL4 [number] | Volume 4 Size*. <br /> Default value: 128 GB.
-VOL5 [number] | Volume 5 Size*. <br /> Default value: 256 GB.
-
-
-**Obs***: <br />
-- Sensitive - The variable value is not displayed in your workspace details after it is stored.<br />
-- VOL[number] | The sizes for the disks in GB that are to be attached to the VSI and used by SAP.<br />
-- The following variables should be the same like the bastion ones: REGION, ZONE, VPC, SUBNET, SECURITYGROUP.
-
+IMAGE | The OS image used for the VSI. A list of images is available [here](https://cloud.ibm.com/docs/vpc?topic=vpc-about-images).<br /> Default value: ibm-redhat-7-6-amd64-sap-applications-3
 
 **SAP input parameters:**
 
@@ -82,27 +73,31 @@ kit_db2_dir | Path to DB2 LUW 10.5 FP7SAP2 Linux on x86_64 64bit dir | The archi
 kit_db2client_dir | Path to DB2 LUW 10.5 FP7SAP2 RDBMS Client dir | The archive downloaded from SAP Support Portal must be extracted and the path provided to this parameter must contain LABEL.ASC file
 
 
+**Obs***: <br />
+- Sensitive - The variable value is not displayed in your Schematics logs and it is hidden in the input field.<br />
+- The following parameters should have the same values as the ones set for the BASTION server: REGION, ZONE, VPC, SUBNET, SECURITY_GROUP.
+- For any manual change in the terraform code, you have to make sure that you use a certified image based on the SAP NOTE: 2927211.
+
+
 ## VPC Configuration
 
-The Security Rules are the following:
-- Allow all traffic in the Security group
-- Allow all outbound traffic
-- Allow inbound DNS traffic (UDP port 53)
-- Allow inbound SSH traffic (TCP port 22)
-- Option to Allow inbound TCP traffic with a custom port or a range of ports.
+The Security Rules inherited from BASTION deployment are the following:
+- Allow all traffic in the Security group for private networks.
+- Allow outbound traffic  (ALL for port 53, TCP for ports 80, 443, 8443)
+- Allow inbound SSH traffic (TCP for port 22) from IBM Schematics Servers.
 
 
  ## Files description and structure:
 
- - `modules` - directory containing the terraform modules
- - `input.auto.tfvars` - contains the variables that will need to be edited by the user to customize the solution
- - `main.tf` - contains the configuration of the VSI for SAP single tier deployment.
- - `output.tf` - contains the code for the information to be displayed after the VSI is created (Hostname, Private IP, Public IP)
- - `integration.tf` - contains the integration code that brings the SAP variabiles from Terraform to Ansible.
+ - `modules` - directory containing the terraform modules.
+ - `ansible`  - directory containing the SAP ansible playbooks.
+ - `main.tf` - contains the configuration of the VSI for the deployment of the current SAP solution.
+ - `output.tf` - contains the code for the information to be displayed after the VSI is created (VPC, Hostname, Private IP).
+ - `integration*.tf & generate*.tf` files - contain the integration code that makes the SAP variabiles from Terraform available to Ansible.
  - `provider.tf` - contains the IBM Cloud Provider data in order to run `terraform init` command.
- - `terraform.tfvars` - contains the IBM Cloud API key referenced in `provider.tf`
- - `variables.tf` - contains variables for the VPC and VSI
+ - `variables.tf` - contains variables for the VPC and VSI.
  - `versions.tf` - contains the minimum required versions for terraform and IBM Cloud provider.
+
 
 
 ## Steps to reproduce:
@@ -112,30 +107,25 @@ The Security Rules are the following:
     create and work with VPC infrastructure and you are [assigned the
     correct
     permissions](https://cloud.ibm.com/docs/schematics?topic=schematics-access) to
-    create the workspace and deploy resources.
+    create the workspace in Schematics and deploy resources.
 2.  [Generate an SSH
     key](https://cloud.ibm.com/docs/vpc?topic=vpc-ssh-keys).
     The SSH key is required to access the provisioned VPC virtual server
     instances via the bastion host. After you have created your SSH key,
     make sure to [upload this SSH key to your IBM Cloud
     account](https://cloud.ibm.com/docs/vpc-on-classic-vsi?topic=vpc-on-classic-vsi-managing-ssh-keys#managing-ssh-keys-with-ibm-cloud-console) in
-    the VPC region and resource group where you want to deploy this
-    example
+    the VPC region and resource group where you want to deploy the SAP solution
 3.  Create the Schematics workspace:
-   1.  From the IBM Cloud menu
+    1.  From the IBM Cloud menu
     select [Schematics](https://cloud.ibm.com/schematics/overview).
        - Click Create a workspace.   
        - Enter a name for your workspace.   
        - Click Create to create your workspace.
-    2.  On the workspace **Settings** page, enter the URL of this example in
-    the Schematics examples Github repository.
-     - Select the Terraform version: Terraform 0.12.
+    2.  On the workspace **Settings** page, enter the URL of this solution in the Schematics examples Github repository.
+     - Select the latest Terraform version.
      - Click **Save template information**.
-     - In the **Input variables** section, review the default input
-        variables and provide alternatives if desired. The only
-        mandatory parameter is the name given to the SSH key that you
-        uploaded to your IBM Cloud account.
-      - Click **Save changes**.
+     - In the **Input variables** section, review the default input variables and provide alternatives if desired.
+    - Click **Save changes**.
 
 4.  From the workspace **Settings** page, click **Generate plan** 
 5.  Click **View log** to review the log files of your Terraform
@@ -150,4 +140,7 @@ of the VSI host, the hostname and the VPC.
 
 ### Related links:
 
-- [See how to create a BASTION/STORAGE VSI for SAP in IBM Schematics](https://github.ibm.com/workload-eng-services/SAP/tree/dev/ibm-schematics/sapbastionsetup-sch)
+- [How to create a BASTION/STORAGE VSI for SAP in IBM Schematics](https://github.com/IBM-Cloud/sap-bastion-setup)
+- [Securely Access Remote Instances with a Bastion Host](https://www.ibm.com/cloud/blog/tutorial-securely-access-remote-instances-with-a-bastion-host)
+- [VPNs for VPC overview: Site-to-site gateways and Client-to-site servers.](https://cloud.ibm.com/docs/vpc?topic=vpc-vpn-overview)
+- [IBM Cloud Schematics](https://www.ibm.com/cloud/schematics)

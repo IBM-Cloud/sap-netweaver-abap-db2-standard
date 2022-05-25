@@ -8,27 +8,19 @@ variable "HOSTNAME" {
     description = "VSI Hostname"
 }
 
-variable "VOL1" {
+variable "RESOURCE_GROUP" {
     type = string
-    description = "Volume 1 Size"
+    description = "Resource Group"
 }
 
-variable "VOL2" {
-    type = string
-    description = "Volume 2 Size"
-}
+# Volume sizes
 
-variable "VOL3" {
-    type = string
-    description = "Volume 3 Size"
-}
+locals {
 
-variable "VOL4" {
-    type = string
-    description = "Volume 4 Size"
-}
+VOL1 = "32"
+VOL2 = "32"
+VOL3 = "64"
+VOL4 = "128"
+VOL5 = "256"
 
-variable "VOL5" {
-    type = string
-    description = "Volume 5 Size"
 }

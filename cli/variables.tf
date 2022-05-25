@@ -1,8 +1,3 @@
-variable "private_ssh_key" {
-	type		= string
-	description = "Input id_rsa private key content"
-}
-
 variable "SSH_KEYS" {
 	type		= list(string)
 	description = "SSH Keys ID list to access the VSI"
@@ -12,23 +7,12 @@ variable "SSH_KEYS" {
 	}
 }
 
-variable "BASTION_FLOATING_IP" {
-	type		= string
-	description = "Input the FLOATING IP from the Bastion Server"
-}
-
-variable "RESOURCE_GROUP" {
-  type        = string
-  description = "EXISTING Resource Group for VSIs and Volumes"
-  default     = "Default"
-}
-
 variable "REGION" {
 	type		= string
 	description	= "Cloud Region"
 	validation {
-		condition     = contains(["eu-de", "eu-gb", "us-south", "us-east"], var.REGION )
-		error_message = "The REGION must be one of: eu-de, eu-gb, us-south, us-east."
+		condition     = contains(["au-syd", "jp-osa", "jp-tok", "eu-de", "eu-gb", "ca-tor", "us-south", "us-east", "br-sao"], var.REGION )
+		error_message = "The REGION must be one of: au-syd, jp-osa, jp-tok, eu-de, eu-gb, ca-tor, us-south, us-east, br-sao."
 	}
 }
 
@@ -68,6 +52,12 @@ variable "SECURITY_GROUP" {
 	}
 }
 
+variable "RESOURCE_GROUP" {
+  type        = string
+  description = "Resource Group"
+  default     = "Default"
+}
+
 variable "HOSTNAME" {
 	type		= string
 	description = "VSI Hostname"
@@ -89,6 +79,37 @@ variable "IMAGE" {
 	default		= "ibm-redhat-7-6-amd64-sap-applications-3"
 }
 
+variable "VOL1" {
+	type		= string
+	description = "Volume 1 Size"
+	default		= "32"
+}
+
+variable "VOL2" {
+	type		= string
+	description = "Volume 2 Size"
+	default		= "32"
+}
+
+variable "VOL3" {
+	type		= string
+	description = "Volume 3 Size"
+	default		= "64"
+}
+
+variable "VOL4" {
+	type		= string
+	description = "Volume 4 Size"
+	default		= "128"
+}
+
+variable "VOL5" {
+	type		= string
+	description = "Volume 5 Size"
+	default		= "256"
+}
+
+
 variable "sap_sid" {
 	type		= string
 	description = "sap_sid"
@@ -107,7 +128,6 @@ variable "sap_ascs_instance_number" {
 	default		= "01"
 }
 
-
 variable "sap_master_password" {
 	type		= string
 	sensitive = true
@@ -117,7 +137,6 @@ variable "sap_master_password" {
 		error_message = "The sap_master_password is not valid."
 	}
 }
-
 
 variable "kit_sapcar_file" {
 	type		= string

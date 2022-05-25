@@ -15,12 +15,7 @@ variable "SUBNET" {
 
 variable "SECURITY_GROUP" {
     type = string
-    description = "EXISTING Security group name"
-}
-
-variable "RESOURCE_GROUP" {
-    type = string
-    description = "Resource Group"
+    description = "Security group name"
 }
 
 variable "HOSTNAME" {
@@ -36,6 +31,11 @@ variable "PROFILE" {
 variable "IMAGE" {
     type = string
     description = "VSI OS Image"
+}
+
+variable "RESOURCE_GROUP" {
+    type = string
+    description = "Resource Group"
 }
 
 variable "SSH_KEYS" {

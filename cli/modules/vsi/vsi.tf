@@ -10,12 +10,12 @@ data "ibm_is_subnet" "subnet" {
   name		= var.SUBNET
 }
 
-data "ibm_is_image" "image" {
-  name		= var.IMAGE
-}
-
 data "ibm_resource_group" "group" {
   name		= var.RESOURCE_GROUP
+}
+
+data "ibm_is_image" "image" {
+  name		= var.IMAGE
 }
 
 resource "ibm_is_instance" "vsi" {

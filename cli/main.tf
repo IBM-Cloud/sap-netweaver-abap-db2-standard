@@ -1,48 +1,46 @@
-module "precheck-ssh-exec" {
-  source		= "./modules/precheck-ssh-exec"
-  BASTION_FLOATING_IP = var.BASTION_FLOATING_IP
-  private_ssh_key = var.private_ssh_key
-  HOSTNAME		= var.HOSTNAME
-}
-
 module "vpc-subnet" {
   source		= "./modules/vpc/subnet"
-  depends_on	= [ module.precheck-ssh-exec ]
   ZONE			= var.ZONE
+  # RESOURCE_GROUP = var.RESOURCE_GROUP
   VPC			= var.VPC
   SECURITY_GROUP = var.SECURITY_GROUP
   SUBNET		= var.SUBNET
 }
+
 
 module "volumes" {
   source		= "./modules/volumes"
-  depends_on	= [ module.precheck-ssh-exec ]
   ZONE			= var.ZONE
-  HOSTNAME		= var.HOSTNAME
   RESOURCE_GROUP = var.RESOURCE_GROUP
+  HOSTNAME		= var.HOSTNAME
+  VOL1			= var.VOL1
+  VOL2			= var.VOL2
+  VOL3			= var.VOL3
+  VOL4			= var.VOL4
+  VOL5			= var.VOL5
 }
+
 
 module "vsi" {
   source		= "./modules/vsi"
-  depends_on	= [ module.volumes , module.precheck-ssh-exec ]
+  depends_on	= [ module.volumes ]
   ZONE			= var.ZONE
   VPC			= var.VPC
   SECURITY_GROUP = var.SECURITY_GROUP
   SUBNET		= var.SUBNET
+  RESOURCE_GROUP = var.RESOURCE_GROUP
   HOSTNAME		= var.HOSTNAME
   PROFILE		= var.PROFILE
   IMAGE			= var.IMAGE
-  RESOURCE_GROUP = var.RESOURCE_GROUP
   SSH_KEYS		= var.SSH_KEYS
   VOLUMES_LIST	= module.volumes.volumes_list
   SAP_SID		= var.sap_sid
 }
 
-module "app-ansible-exec" {
+
+module "ansible-exec" {
   source		= "./modules/ansible-exec"
-  depends_on	= [ module.vsi , local_file.app_ansible-vars ]
+  depends_on	= [ module.vsi ]
   IP			= module.vsi.PRIVATE-IP
-  PLAYBOOK = "sapnwdb2.yml"
-  BASTION_FLOATING_IP = var.BASTION_FLOATING_IP
-  private_ssh_key = var.private_ssh_key
+  sap_master_password = var.sap_master_password
 }
