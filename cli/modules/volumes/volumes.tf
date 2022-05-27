@@ -22,6 +22,7 @@ resource "ibm_is_volume" "vol3" {
   name		= "${var.HOSTNAME}-vol3"
   profile	= "10iops-tier"
   zone		= var.ZONE
+  resource_group = data.ibm_resource_group.group.id
   capacity	= var.VOL3
 }
 

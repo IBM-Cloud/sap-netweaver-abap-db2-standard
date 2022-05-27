@@ -19,7 +19,7 @@ variable "BASTION_FLOATING_IP" {
 
 variable "RESOURCE_GROUP" {
   type        = string
-  description = "EXISTING Resource Group for VSIs and Volumes"
+  description = "An EXISTING Resource Group for: VPC, subnet, security group, bastion FLOATING IP, VSIs and Volumes resources"
   default     = "Default"
 }
 
