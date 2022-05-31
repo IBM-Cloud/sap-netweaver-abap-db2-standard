@@ -43,7 +43,7 @@ ibmcloud_api_key | IBM Cloud API key (Sensitive* value).
 private_ssh_key | id_rsa private key content (Sensitive* value).
 SSH_KEYS | List of SSH Keys UUIDs that are allowed to SSH as root to the VSI. Can contain one or more IDs. The list of SSH Keys is available [here](https://cloud.ibm.com/vpc-ext/compute/sshKeys). <br /> Sample input (use your own SSH UUIDs from IBM Cloud):<br /> [ "r010-57bfc315-f9e5-46bf-bf61-d87a24a9ce7a" , "r010-3fcd9fe7-d4a7-41ce-8bb3-d96e936b2c7e" ]
 BASTION_FLOATING_IP | The FLOATING IP from the Bastion Server.
-RESOURCE_GROUP | An EXISTING Resource Group for: VPC, subnet, security group, bastion FLOATING IP, VSIs and Volumes resources. <br /> Default value: "Default". The list of Resource Groups is available [here](https://cloud.ibm.com/account/resource-groups).
+RESOURCE_GROUP | An EXISTING Resource Group for VSI and volumes. <br /> Default value: "Default". The list of Resource Groups is available [here](https://cloud.ibm.com/account/resource-groups).
 REGION | The cloud region where to deploy the solution. <br /> The regions and zones for VPC are listed [here](https://cloud.ibm.com/docs/containers?topic=containers-regions-and-zones#zones-vpc). <br /> Review supported locations in IBM Cloud Schematics [here](https://cloud.ibm.com/docs/schematics?topic=schematics-locations).<br /> Sample value: eu-de.
 ZONE | The cloud zone where to deploy the solution. <br /> Sample value: eu-de-2.
 VPC | EXISTING VPC name. The list of VPCs is available [here](https://cloud.ibm.com/vpc-ext/network/vpcs)

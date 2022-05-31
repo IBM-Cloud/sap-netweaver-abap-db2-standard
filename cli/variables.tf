@@ -54,7 +54,7 @@ variable "SECURITY_GROUP" {
 
 variable "RESOURCE_GROUP" {
   type        = string
-  description = "EXISTING Resource Group for: VPC, subnet, security group, bastion FLOATING IP, VSIs and Volumes resources"
+  description = "EXISTING Resource Group for VSI and volumes"
   default     = "Default"
 }
 

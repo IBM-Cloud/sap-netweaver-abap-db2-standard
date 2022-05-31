@@ -29,21 +29,21 @@ Edit your VPC, Subnet, Security group, Hostname, Profile, Image, SSH Keys and st
 
 ```shell
 #Infra VPC variables
-REGION			 = "eu-de"
-ZONE			= "eu-de-2"
-VPC			    = "sap"                         # EXISTING VPC name
-SECURITY_GROUP	= "sap-securitygroup"   # EXISTING Security group name
-SUBNET			= "sap-subnet"               # EXISTING Subnet name
-RESOURCE_GROUP  = "wes-automation"           # EXISTING Resource Group
-HOSTNAME		= "db2sapm1"
-PROFILE			= "bx2-4x16"
-IMAGE			= "ibm-redhat-7-6-amd64-sap-applications-3"
-SSH_KEYS		= [ "r010-57bfc315-f9e5-46bf-bf61-d87a24a9ce7a" , "r010-3fcd9fe7-d4a7-41ce-8bb3-d96e936b2c7e" ]
-VOL1			= "32"
-VOL2			= "32"
-VOL3			= "64"
-VOL4			= "128"
-VOL5			= "256"
+REGION = "eu-de"
+ZONE = "eu-de-2"
+VPC = "sap" # EXISTING VPC name
+SECURITY_GROUP = "sap-securitygroup" # EXISTING Security group name
+SUBNET = "sap-subnet" # EXISTING Subnet name
+RESOURCE_GROUP = "wes-automation" # EXISTING Resource Group for VSI and volumes
+HOSTNAME = "db2sapm1"
+PROFILE = "bx2-4x16"
+IMAGE = "ibm-redhat-7-6-amd64-sap-applications-3"
+SSH_KEYS = [ "r010-57bfc315-f9e5-46bf-bf61-d87a24a9ce7a" , "r010-3fcd9fe7-d4a7-41ce-8bb3-d96e936b2c7e" ]
+VOL1 = "32"
+VOL2 = "32"
+VOL3 = "64"
+VOL4 = "128"
+VOL5 = "256"
 ```
 
 Parameter | Description
@@ -55,7 +55,7 @@ ZONE | The cloud zone where to deploy the solution. <br /> Sample value: eu-de-2
 VPC | EXISTING VPC name. The list of VPCs is available [here](https://cloud.ibm.com/vpc-ext/network/vpcs)
 SUBNET | EXISTING Subnet name. The list of Subnets is available [here](https://cloud.ibm.com/vpc-ext/network/subnets). 
 SECURITY_GROUP | EXISTING Security group name. The list of Security Groups is available [here](https://cloud.ibm.com/vpc-ext/network/securityGroups). 
-RESOURCE_GROUP | An EXISTING Resource Group for: VPC, subnet, security group, bastion FLOATING IP, VSIs and Volumes resources. The list of Resource Groups is available [here](https://cloud.ibm.com/account/resource-groups).
+RESOURCE_GROUP | An EXISTING Resource Group for VSI and volumes. The list of Resource Groups is available [here](https://cloud.ibm.com/account/resource-groups).
 HOSTNAME | The Hostname for the VSI. The hostname must have up to 13 characters as required by SAP. For more information on rules regarding hostnames for SAP systems, check SAP Note *611361 - Hostnames of SAP ABAP Platform servers*
 PROFILE |  The profile used for the VSI. A list of profiles is available [here](https://cloud.ibm.com/docs/vpc?topic=vpc-profiles) <br /> Default value: "bx2-4x16"
 IMAGE | The OS image used for the VSI. A list of images is available [here](https://cloud.ibm.com/docs/vpc?topic=vpc-about-images).<br /> Default value: ibm-redhat-7-6-amd64-sap-applications-3
