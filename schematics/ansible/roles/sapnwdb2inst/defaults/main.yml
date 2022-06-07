@@ -4,4 +4,27 @@ sap_product_id: "NW_ABAP_OneHost:NW750.DB6.ABAP"
 
 #Target files location
 sap_kit: "/usr/sap/trans/kit"
+
+# Source and destination for the kit files
+saps_kit:
+  - saps_src: "{{ kit_sapcar_file }}"
+    saps_dest: "{{ sap_kit }}/sapcar"
+  - saps_src: "{{ kit_swpm_file }}"
+    saps_dest: "{{ sap_kit }}/swpm.sar"
+  - saps_src: "{{ kit_sapexe_file }}"
+    saps_dest: "{{ sap_kit }}/sapexe.sar"
+  - saps_src: "{{ kit_sapexedb_file }}"
+    saps_dest: "{{ sap_kit }}/sapexedb.sar"
+  - saps_src: "{{ kit_saphotagent_file }}"
+    saps_dest: "{{ sap_kit }}/saphotagent.sar"
+  - saps_src: "{{ kit_igsexe_file }}"
+    saps_dest: "{{ sap_kit }}/igsexe.sar"    
+  - saps_src: "{{ kit_igshelper_file }}"
+    saps_dest: "{{ sap_kit }}/igshelper.sar"    
+  - saps_src: "{{ kit_export_dir }}/"
+    saps_dest: "{{ sap_kit }}/export/"
+  - saps_src: "{{ kit_db2_dir }}/"
+    saps_dest: "{{ sap_kit }}/db2/"    
+  - saps_src: "{{ kit_db2client_dir }}/"
+    saps_dest: "{{ sap_kit }}/db2client/"
 ...
