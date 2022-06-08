@@ -9,11 +9,6 @@ PROFILE = "bx2-4x16"
 IMAGE = "ibm-redhat-7-6-amd64-sap-applications-3"
 RESOURCE_GROUP = "wes-automation" # EXISTING Resource Group for VSI and volumes
 SSH_KEYS = [ "r010-57bfc315-f9e5-46bf-bf61-d87a24a9ce7a" , "r010-3fcd9fe7-d4a7-41ce-8bb3-d96e936b2c7e" ]
-VOL1 = "32"
-VOL2 = "32"
-VOL3 = "64"
-VOL4 = "128"
-VOL5 = "256"
 
 ##SAP system configuration
 sap_sid	= "DB1"
