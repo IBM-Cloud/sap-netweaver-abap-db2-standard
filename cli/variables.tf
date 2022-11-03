@@ -76,13 +76,17 @@ variable "PROFILE" {
 variable "IMAGE" {
 	type		= string
 	description = "VSI OS Image"
-	default		= "ibm-redhat-7-6-amd64-sap-applications-3"
+	default		= "ibm-redhat-8-4-amd64-sap-applications-4"
+	validation {
+		condition     = length(regexall("^(ibm-redhat-7-6-amd64-sap-applications|ibm-redhat-8-4-amd64-sap-applications|ibm-sles-15-3-amd64-sap-applications)-[0-9][0-9]*", var.IMAGE)) > 0
+		error_message = "The OS SAP IMAGE must be one of  \"ibm-sles-15-3-amd64-sap-applications-x\", \"ibm-redhat-8-4-amd64-sap-applications-x\" or \"ibm-redhat-7-6-amd64-sap-applications-x\"."
+	}
 }
 
 variable "VOL1" {
 	type		= string
 	description = "Volume 1 Size"
-	default		= "32"
+	default		= "40"
 }
 
 variable "VOL2" {
@@ -189,11 +193,11 @@ variable "kit_export_dir" {
 variable "kit_db2_dir" {
 	type		= string
 	description = "kit_db2_dir"
-	default		= "/storage/NW75DB2/51051007/DB2_FOR_LUW_10.5_FP7SAP2_LINUX_"
+	default		= "/storage/NW75DB2/51055138/DB2_FOR_LUW_11.5_MP6_FP0SAP2_LINUX_"
 }
 
 variable "kit_db2client_dir" {
 	type		= string
 	description = "kit_db2client_dir"
-	default		= "/storage/NW75DB2/51051049"
+	default		= "/storage/NW75DB2/51055140"
 }

@@ -1,4 +1,7 @@
 ---
+# SAP Notes:
+# - 2772999 - Red Hat Enterprise Linux 8.x: Installation and Configuration (v22)
+
 - name: Configure tmpfiles exceptions
   copy:
     src: sap.conf

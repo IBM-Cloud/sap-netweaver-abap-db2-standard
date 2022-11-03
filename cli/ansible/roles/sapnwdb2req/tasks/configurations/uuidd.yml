@@ -1,4 +1,9 @@
 ---
+# SAP note: 
+# - 2772999 - Red Hat Enterprise Linux 8.x: Installation and Configuration (v22)
+# - 2578899 - SUSE Linux Enterprise Server 15: Installation Note (v44)
+# - 1391070 - Linux UUID solutions (v41)
+
 - name: Configuring uuidd
   systemd:
     name: uuidd

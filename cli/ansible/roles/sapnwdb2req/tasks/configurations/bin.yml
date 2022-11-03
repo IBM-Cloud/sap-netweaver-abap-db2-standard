@@ -1,0 +1,17 @@
+---
+# SAP Note: 
+# - 3018573 - DB2 installation error DBI1149E You have to be the owner of the install copy 
+#             to execute this program (v2)                 
+
+- name: Create bin group
+  group:
+    name: bin
+    state: present
+
+- name: Create bin user
+  user:
+    name: bin
+    group: bin
+    comment: bin
+    shell: /sbin/nologin
+    state: present

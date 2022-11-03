@@ -1,28 +1,25 @@
-# Automation script for central SAP Netweaver and DB2 installation using Terraform and Ansible integration deployment throught IBM Schematics.
-
+# Single Tier SAP Netweaver ABAP Stack with DB2 Deployment using IBM Schematics
 
 ## Description
-This solution will perform an automated deployment of a single host with **SAP Netweaver** and  **DB2** on top of **Red Hat Enterprise Linux 7.6 for SAP Applications** through IBM Cloud Schematics. It shows how to deploy an SAP solution in an existing IBM Cloud Gen2 VPC using a bastion host with secure remote SSH access.
+This automation solution is designed for the deployment of  **Single Tier SAP Netweaver ABAP Stack with DB2** using IBM Cloud Schematics. The SAP solution will be deployed on top of one of the following Operating Systems: **SUSE Linux Enterprise Server 15 SP 3 for SAP**, **Red Hat Enterprise Linux 8.4 for SAP**, **Red Hat Enterprise Linux 7.6 for SAP** in an existing IBM Cloud Gen2 VPC, using an existing bastion host with secure remote SSH access.
 
-The intended usage is for remote software installation using Terraform remote-exec and Ansible playbooks executed by Schematics.
-
-This example and the terraform modules only seek to implement a 'reasonable' set of best practices for SAP VSI host configuration. Your own Organization could have additional requirements that should be applied before the deployment.
+The solution is based on Terraform remote-exec and Ansible playbooks executed by Schematics and it is implementing a 'reasonable' set of best practices for SAP VSI host configuration.
 
 **It contains:**
-
-- Terraform scripts for deploying in an **existing  VPC** the  Subnet, Security Group with rules, SAP volumes and a VSI.
-- Bash scripts to install the prerequisites for the SAP VSI deployment and the integration toward to **SAP Netweaver 7.5** with **DB2 10.5FP7** installation using IBM Schematics GUI in a single step.
-- Ansible scripts to configure SAP Netweaver and DB2 installation.
+- Terraform scripts for the deployment of a VSI, in an EXISTING VPC, with Subnet and Security Group. The VSI is intended to be used for the data base instance and the for the application instance.
+- Bash scripts used for the checking of the prerequisites required by SAP VSI deployment and for the integration into a single step in IBM Schematics GUI of the VSI provisioning and the **Single Tier SAP Netweaver ABAP Stack with DB2** installation.
+- Ansible scripts to configure Single Tier SAP Netweaver ABAP Stack with DB2 installation.
+Please note that Ansible is started by Terraform and must be available on the same host.
 
 ## Installation media
-The SAP installation media used for this deployment is the default one for **SAP Netweaver 7.5** with **DB2 10.5FP7** available at SAP Support Portal under *INSTALLATION AND UPGRADE* area and it has to be provided manually in the input parameter file.
+SAP installation media used for this deployment is the default one for **SAP Netweaver 7.5** with **DB2 11.5.6 FP0** on Red Hat 8.4 and Suse 15 SP3 or **DB2 10.5FP7** on Red Hat 7.6, available at SAP Support Portal under *INSTALLATION AND UPGRADE* area and it has to be provided manually in the input parameter file.
 
 ## VSI Configuration
-The VSI is deployed with Red Hat Enterprise Linux 7.6 for SAP Applications (amd64). The SSH keys are configured to allow root user access. The following storage volumes are creating during the provisioning:
+The VSIs are deployed with one of the following Operating Systems: Suse Enterprise Linux 15 SP3 for SAP Applications (amd64), Red Hat Enterprise Linux 8.4 for SAP Applications (amd64), Red Hat Enterprise Linux 7.6 for SAP Applications (amd64). The SSH keys are configured to allow root user access. The following storage volumes are creating during the provisioning:
 
 SAP NetWeaver-ABAP-DB2-standard VSI Disks:
 - 1 x 32 GB disk with 10 IOPS / GB - DATA
-- 1x 32 GB disk with 10 IOPS / GB - SWAP
+- 1 x 40 GB disk with 10 IOPS / GB - SWAP
 - 1 x 64 GB disk with 10 IOPS / GB - DATA
 - 1 x 128 GB disk with 10 IOPS / GB - DATA
 - 1 x 256 GB disk with 10 IOPS / GB - DATA
@@ -43,15 +40,15 @@ ibmcloud_api_key | IBM Cloud API key (Sensitive* value).
 private_ssh_key | id_rsa private key content (Sensitive* value).
 SSH_KEYS | List of SSH Keys UUIDs that are allowed to SSH as root to the VSI. Can contain one or more IDs. The list of SSH Keys is available [here](https://cloud.ibm.com/vpc-ext/compute/sshKeys). <br /> Sample input (use your own SSH UUIDs from IBM Cloud):<br /> [ "r010-57bfc315-f9e5-46bf-bf61-d87a24a9ce7a" , "r010-3fcd9fe7-d4a7-41ce-8bb3-d96e936b2c7e" ]
 BASTION_FLOATING_IP | The FLOATING IP from the Bastion Server.
-RESOURCE_GROUP | An EXISTING Resource Group for VSI and volumes. <br /> Default value: "Default". The list of Resource Groups is available [here](https://cloud.ibm.com/account/resource-groups).
+RESOURCE_GROUP | The name of an EXISTING Resource Group for VSIs and Volumes resources. <br /> Default value: "Default". The list of Resource Groups is available [here](https://cloud.ibm.com/account/resource-groups).
 REGION | The cloud region where to deploy the solution. <br /> The regions and zones for VPC are listed [here](https://cloud.ibm.com/docs/containers?topic=containers-regions-and-zones#zones-vpc). <br /> Review supported locations in IBM Cloud Schematics [here](https://cloud.ibm.com/docs/schematics?topic=schematics-locations).<br /> Sample value: eu-de.
 ZONE | The cloud zone where to deploy the solution. <br /> Sample value: eu-de-2.
-VPC | EXISTING VPC name. The list of VPCs is available [here](https://cloud.ibm.com/vpc-ext/network/vpcs)
-SUBNET | EXISTING Subnet name. The list of Subnets is available [here](https://cloud.ibm.com/vpc-ext/network/subnets). 
-SECURITY_GROUP | EXISTING Security group name. The list of Security Groups is available [here](https://cloud.ibm.com/vpc-ext/network/securityGroups). 
-HOSTNAME | The Hostname for the VSI. The hostname must have up to 13 characters as required by SAP. For more information on rules regarding hostnames for SAP systems, check SAP Note *611361 - Hostnames of SAP ABAP Platform servers*
-PROFILE |  The profile used for the VSI. A list of profiles is available [here](https://cloud.ibm.com/docs/vpc?topic=vpc-profiles) <br /> Default value: "bx2-4x16"
-IMAGE | The OS image used for the VSI. A list of images is available [here](https://cloud.ibm.com/docs/vpc?topic=vpc-about-images).<br /> Default value: ibm-redhat-7-6-amd64-sap-applications-3
+VPC | The name of an EXISTING VPC. The list of VPCs is available [here](https://cloud.ibm.com/vpc-ext/network/vpcs)
+SUBNET | The name of an EXISTING Subnet. The list of Subnets is available [here](https://cloud.ibm.com/vpc-ext/network/subnets).
+SECURITY_GROUP | The name of an EXISTING Security group. The list of Security Groups is available [here](https://cloud.ibm.com/vpc-ext/network/securityGroups).
+HOSTNAME | The Hostname for the VSI. The hostname should be up to 13 characters as required by SAP. For more information on rules regarding hostnames for SAP systems, check [SAP Note 611361: Hostnames of SAP ABAP Platform servers](https://launchpad.support.sap.com/#/notes/%20611361)
+PROFILE |  A list of profiles is available [here](https://cloud.ibm.com/docs/vpc?topic=vpc-profiles) <br>  For more information about supported DB/OS and IBM Gen 2 Virtual Server Instances (VSI), check [SAP Note 2927211: SAP Applications on IBM Virtual Private Cloud](https://launchpad.support.sap.com/#/notes/2927211) <br /> Default value: "bx2-4x16"
+IMAGE | The OS image used for the VSI. A list of images is available [here](https://cloud.ibm.com/docs/vpc?topic=vpc-about-images).<br /> Supported images: ibm-sles-15-3-amd64-sap-applications-5, ibm-redhat-8-4-amd64-sap-applications-4, ibm-redhat-7-6-amd64-sap-applications-3. Default value: ibm-redhat-8-4-amd64-sap-applications-4
 
 **SAP input parameters:**
 
@@ -69,15 +66,13 @@ kit_sapexedb_file | Path to SAP Kernel DB archive (SAR) | As downloaded from SAP
 kit_igsexe_file | Path to IGS archive (SAR) | As downloaded from SAP Support Portal
 kit_igshelper_file | Path to IGS Helper archive (SAR) | As downloaded from SAP Support Portal
 kit_export_dir | Path to NW 7.5 Installation Export dir | The archive downloaded from SAP Support Portal must be extracted and the path provided to this parameter must contain LABEL.ASC file
-kit_db2_dir | Path to DB2 LUW 10.5 FP7SAP2 Linux on x86_64 64bit dir | The archive downloaded from SAP Support Portal must be extracted and the path provided to this parameter must contain LABEL.ASC file
-kit_db2client_dir | Path to DB2 LUW 10.5 FP7SAP2 RDBMS Client dir | The archive downloaded from SAP Support Portal must be extracted and the path provided to this parameter must contain LABEL.ASC file
-
+kit_db2_dir | Path to DB2 LUW 11.5 MP6 FP0 SAP2 Linux on x86_64 64bit dir for Red Hat 8.4 and Suse 15 SP3 and path to DB2 LUW 10.5 FP7SAP2 Linux on x86_64 64bit dir for Red Hat 7.6 | The archive downloaded from SAP Support Portal must be extracted and the path provided to this parameter must contain LABEL.ASC file. Default value: /storage/NW75DB2/51055138/DB2_FOR_LUW_11.5_MP6_FP0SAP2_LINUX_
+kit_db2client_dir | Path to DB2 LUW 11.5 MP6 FP0 SAP2 RDBMS Client dir for Red Hat 8.4 and Suse 15 SP3 and path to DB2 LUW 10.5 FP7SAP2 RDBMS Client dir for Red Hat 7.6 | The archive downloaded from SAP Support Portal must be extracted and the path provided to this parameter must contain LABEL.ASC file. Default value: /storage/NW75DB2/51055140
 
 **Obs***: <br />
 - Sensitive - The variable value is not displayed in your Schematics logs and it is hidden in the input field.<br />
 - The following parameters should have the same values as the ones set for the BASTION server: REGION, ZONE, VPC, SUBNET, SECURITY_GROUP.
 - For any manual change in the terraform code, you have to make sure that you use a certified image based on the SAP NOTE: 2927211.
-
 
 ## VPC Configuration
 
@@ -85,7 +80,6 @@ The Security Rules inherited from BASTION deployment are the following:
 - Allow all traffic in the Security group for private networks.
 - Allow outbound traffic  (ALL for port 53, TCP for ports 80, 443, 8443)
 - Allow inbound SSH traffic (TCP for port 22) from IBM Schematics Servers.
-
 
  ## Files description and structure:
 
@@ -98,11 +92,9 @@ The Security Rules inherited from BASTION deployment are the following:
  - `variables.tf` - contains variables for the VPC and VSI.
  - `versions.tf` - contains the minimum required versions for terraform and IBM Cloud provider.
 
+## Steps to follow:
 
-
-## Steps to reproduce:
-
-1.  Be sure that you have the [required IBM Cloud IAM
+1.  Make sure that you have the [required IBM Cloud IAM
     permissions](https://cloud.ibm.com/docs/vpc?topic=vpc-managing-user-permissions-for-vpc-resources) to
     create and work with VPC infrastructure and you are [assigned the
     correct

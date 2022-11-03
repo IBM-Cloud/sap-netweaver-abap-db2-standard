@@ -1,11 +1,14 @@
 ---
+# SAP Notes:
+# - 2772999 - Red Hat Enterprise Linux 8.x: Installation and Configuration (v22)
+# - 1771258 - Linux: User and system resource limits (v6)
 - name: Set nofile limit for sapsys group
   pam_limits:
     dest: /etc/security/limits.d/99-sap.conf
     domain: "@sapsys"
     limit_item: nofile
     limit_type: "{{ ltype }}"
-    value: "65536"
+    value: "1048576"
   loop:
     - soft
     - hard
@@ -18,7 +21,7 @@
     domain: "@db{{ sap_sid|lower }}adm"
     limit_item: nofile
     limit_type: "{{ ltype }}"
-    value: "65536"
+    value: "1048576"
   loop:
     - soft
     - hard
@@ -49,5 +52,6 @@
     - soft
     - hard
   loop_control:
-    loop_var: ltype 
+    loop_var: ltype
+
 ...

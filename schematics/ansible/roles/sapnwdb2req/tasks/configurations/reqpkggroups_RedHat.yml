@@ -1,0 +1,6 @@
+---
+- name: Import required package groups
+  dnf:
+    state: present
+    name: "{{ sapnw_required_package_groups }}"
+...

@@ -1,8 +1,8 @@
 ---
-#Sapinst product-id
+# Sapinst product-id
 sap_product_id: "NW_ABAP_OneHost:NW750.DB6.ABAP"
 
-#Target files location
+# Target files location
 sap_kit: "/usr/sap/trans/kit"
 
 # Source and destination for the kit files

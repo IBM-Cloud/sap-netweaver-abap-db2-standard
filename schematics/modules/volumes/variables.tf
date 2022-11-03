@@ -17,7 +17,7 @@ variable "RESOURCE_GROUP" {
 
 locals {
 
-VOL1 = "32"
+VOL1 = "40"
 VOL2 = "32"
 VOL3 = "64"
 VOL4 = "128"
