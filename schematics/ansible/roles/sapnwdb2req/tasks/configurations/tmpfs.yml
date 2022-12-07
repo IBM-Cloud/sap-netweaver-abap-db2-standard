@@ -14,19 +14,19 @@
     swap_lv_size_g: "{{ app_ram_g | int * 2 }}"
   when: app_ram_g | int < 32
 
-- name: Compute the swap logical volume size for RAM higher than 32 GB
-  set_fact:
-    swap_lv_size_g: "{{ item.size }}"
-  loop: "{{ swap_lv }}"
-  when: (app_ram_g | int > 32) and (app_ram_g | int >= item.ram_min) and (app_ram_g | int <= item.ram_min)
-
-- name: Compute the swap logical volume size for RAM higher than 32 GB
+- name: Compute the swap logical volume size for RAM higher than 32 GB and lower than 8192
   set_fact:
     swap_lv_size_g: "{{ swap_data.size }}"
   loop: "{{ swap_lv }}"
   loop_control:
     loop_var: swap_data
-  when: (app_ram_g | int > 32) and (app_ram_g | int >= swap_data.ram_min) and (app_ram_g | int <= swap_data.ram_min)
+  when: (app_ram_g | int >= 32) and (app_ram_g | int < 8192) and (app_ram_g | int >= swap_data.ram_min) and (app_ram_g | int <= swap_data.ram_max)
+
+- name: Set swap logical volume size for RAM higher than 8192
+  set_fact:
+    # swap_lv_size_g: "320"
+    swap_lv_size_g: "32"
+  when: app_ram_g | int >= 8192
 
 - name: Get the current tmpfs mount data
   shell: set -o pipefail && df -h |grep tmpfs|grep shm| awk '{print $2}'
