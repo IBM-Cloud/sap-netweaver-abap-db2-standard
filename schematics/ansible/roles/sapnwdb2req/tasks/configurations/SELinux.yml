@@ -1,8 +1,0 @@
----
-# SAP Note:
-# - 2772999 - Red Hat Enterprise Linux 8.x: Installation and Configuration (v22)
-
-- name: Disable SELinux
-  selinux:
-    state: disabled
-...    

@@ -1,0 +1,213 @@
+variable "private_ssh_key" {
+	type		= string
+	description = "Input your id_rsa private key pair content in OpenSSH format"
+	nullable = false
+	validation {
+	condition = length(var.private_ssh_key) >= 64 && var.private_ssh_key != null && length(var.private_ssh_key) != 0 || contains(["n.a"], var.private_ssh_key )
+	error_message = "The content for private_ssh_key variable must be completed in OpenSSH format."
+      }
+}
+
+variable "SSH_KEYS" {
+	type		= list(string)
+	description = "IBM Cloud SSH Keys ID list to access the VSIs"
+	validation {
+		condition     = var.SSH_KEYS == [] ? false : true && var.SSH_KEYS == [""] ? false : true
+		error_message = "At least one SSH KEY is needed to be able to access the VSI."
+	}
+}
+
+variable "BASTION_FLOATING_IP" {
+	type		= string
+	description = "Input the FLOATING IP from the Bastion Server"
+	nullable = false
+	validation {
+        condition = can(regex("^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$",var.BASTION_FLOATING_IP)) || contains(["localhost"], var.BASTION_FLOATING_IP ) && var.BASTION_FLOATING_IP!= null
+        error_message = "Incorrect format for variable: BASTION_FLOATING_IP."
+      }
+}
+
+variable "RESOURCE_GROUP" {
+  type        = string
+  description = "An EXISTING Resource Group for VSI and volumes"
+  default     = "Default"
+}
+
+variable "REGION" {
+	type		= string
+	description	= "Cloud Region"
+	validation {
+		condition     = contains(["au-syd", "jp-osa", "jp-tok", "eu-de", "eu-gb", "ca-tor", "us-south", "us-east", "br-sao"], var.REGION )
+		error_message = "For CLI deployments, the REGION must be one of: au-syd, jp-osa, jp-tok, eu-de, eu-gb, ca-tor, us-south, us-east, br-sao. \n For Schematics, the REGION must be one of: eu-de, eu-gb, us-south, us-east."
+	}
+}
+
+variable "ZONE" {
+	type		= string
+	description	= "Cloud Zone"
+	validation {
+		condition     = length(regexall("^(eu-de|eu-gb|us-south|us-east)-(1|2|3)$", var.ZONE)) > 0
+		error_message = "The ZONE is not valid."
+	}
+}
+
+variable "VPC" {
+	type		= string
+	description = "EXISTING VPC name"
+	default = "sap"
+	validation {
+		condition     = length(regexall("^([a-z]|[a-z][-a-z0-9]*[a-z0-9]|[0-9][-a-z0-9]*([a-z]|[-a-z][-a-z0-9]*[a-z0-9]))$", var.VPC)) > 0
+		error_message = "The VPC name is not valid."
+	}
+}
+
+variable "SUBNET" {
+	type		= string
+	description = "EXISTING Subnet name"
+	default		= "sap-subnet"
+	validation {
+		condition     = length(regexall("^([a-z]|[a-z][-a-z0-9]*[a-z0-9]|[0-9][-a-z0-9]*([a-z]|[-a-z][-a-z0-9]*[a-z0-9]))$", var.SUBNET)) > 0
+		error_message = "The SUBNET name is not valid."
+	}
+}
+
+variable "SECURITY_GROUP" {
+	type		= string
+	description = "EXISTING Security group name"
+	default = "sap-securitygroup"
+	validation {
+		condition     = length(regexall("^([a-z]|[a-z][-a-z0-9]*[a-z0-9]|[0-9][-a-z0-9]*([a-z]|[-a-z][-a-z0-9]*[a-z0-9]))$", var.SECURITY_GROUP)) > 0
+		error_message = "The SECURITY_GROUP name is not valid."
+	}
+}
+
+variable "HOSTNAME" {
+	type		= string
+	description = "VSI Hostname"
+	default		= "db2saphost1"
+	validation {
+		condition     = length(var.HOSTNAME) <= 13 && length(regexall("^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\\-]*[a-zA-Z0-9])\\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\\-]*[A-Za-z0-9])$", var.HOSTNAME)) > 0
+		error_message = "The HOSTNAME is not valid."
+	}
+}
+
+variable "PROFILE" {
+	type		= string
+	description = "VSI Profile"
+	default		= "bx2-4x16"
+}
+
+variable "IMAGE" {
+	type		= string
+	description = "VSI OS Image"
+	default		= "ibm-redhat-8-4-amd64-sap-applications-4"
+	validation {
+		condition     = length(regexall("^(ibm-redhat-7-6-amd64-sap-applications|ibm-redhat-8-4-amd64-sap-applications|ibm-sles-15-3-amd64-sap-applications)-[0-9][0-9]*", var.IMAGE)) > 0
+		error_message = "The OS SAP IMAGE must be one of  \"ibm-sles-15-3-amd64-sap-applications-x\", \"ibm-redhat-8-4-amd64-sap-applications-x\" or \"ibm-redhat-7-6-amd64-sap-applications-x\"."
+	}
+}
+
+data "ibm_is_instance" "vsi" {
+  depends_on = [module.vsi]
+  name    =  var.HOSTNAME
+}
+
+variable "sap_sid" {
+	type		= string
+	description = "sap_sid"
+	default		= "DB2"
+	validation {
+		condition     = length(regexall("^[a-zA-Z][a-zA-Z0-9][a-zA-Z0-9]$", var.sap_sid)) > 0 && !contains(["ADD", "ALL", "AMD", "AND", "ANY", "ARE", "ASC", "AUX", "AVG", "BIT", "CDC", "COM", "CON", "DBA", "END", "EPS", "FOR", "GET", "GID", "IBM", "INT", "KEY", "LOG", "LPT", "MAP", "MAX", "MIN", "MON", "NIX", "NOT", "NUL", "OFF", "OLD", "OMS", "OUT", "PAD", "PRN", "RAW", "REF", "ROW", "SAP", "SET", "SGA", "SHG", "SID", "SQL", "SUM", "SYS", "TMP", "TOP", "UID", "USE", "USR", "VAR"], var.sap_sid)
+		error_message = "The sap_sid is not valid."
+	}
+}
+
+variable "sap_ci_instance_number" {
+	type		= string
+	description = "sap_ci_instance_number"
+	default		= "00"
+	validation {
+		condition     = var.sap_ci_instance_number >= 0 && var.sap_ci_instance_number <=97
+		error_message = "The sap_ci_instance_number is not valid."
+	}
+}
+
+variable "sap_ascs_instance_number" {
+	type		= string
+	description = "sap_ascs_instance_number"
+	default		= "01"
+	validation {
+		condition     = var.sap_ascs_instance_number >= 0 && var.sap_ascs_instance_number <=97
+		error_message = "The sap_ascs_instance_number is not valid."
+	}
+}
+
+variable "sap_main_password" {
+	type		= string
+	sensitive = true
+	description = "sap_main_password"
+	validation {
+		condition     = length(regexall("^(.{0,9}|.{15,}|[^0-9]*)$", var.sap_main_password)) == 0 && length(regexall("^[^0-9_][0-9a-zA-Z@#$_]+$", var.sap_main_password)) > 0
+		error_message = "The sap_main_password is not valid."
+	}
+}
+
+variable "kit_sapcar_file" {
+	type		= string
+	description = "kit_sapcar_file"
+	default		= "/storage/NW75DB2/SAPCAR_1010-70006178.EXE"
+}
+
+variable "kit_swpm_file" {
+	type		= string
+	description = "kit_swpm_file"
+	default		= "/storage/NW75DB2/SWPM10SP37_2-20009701.SAR"
+}
+
+variable "kit_saphotagent_file" {
+	type		= string
+	description = "kit_saphotagent_file"
+	default		= "/storage/NW75DB2/SAPHOSTAGENT51_51-20009394.SAR"
+}
+
+variable "kit_sapexe_file" {
+	type		= string
+	description = "kit_sapexe_file"
+	default		= "/storage/NW75DB2/SAPEXE_800-80002573.SAR"
+}
+
+variable "kit_sapexedb_file" {
+	type		= string
+	description = "kit_sapexedb_file"
+	default		= "/storage/NW75DB2/SAPEXEDB_800-80002603.SAR"
+}
+
+variable "kit_igsexe_file" {
+	type		= string
+	description = "kit_igsexe_file"
+	default		= "/storage/NW75DB2/igsexe_13-80003187.sar"
+}
+
+variable "kit_igshelper_file" {
+	type		= string
+	description = "kit_igshelper_file"
+	default		= "/storage/NW75DB2/igshelper_17-10010245.sar"
+}
+
+variable "kit_export_dir" {
+	type		= string
+	description = "kit_export_dir"
+	default		= "/storage/NW75DB2/51050829"
+}
+
+variable "kit_db2_dir" {
+	type		= string
+	description = "kit_db2_dir"
+	default		= "/storage/NW75DB2/51055138/DB2_FOR_LUW_11.5_MP6_FP0SAP2_LINUX_"
+}
+
+variable "kit_db2client_dir" {
+	type		= string
+	description = "kit_db2client_dir"
+	default		= "/storage/NW75DB2/51055140"
+}

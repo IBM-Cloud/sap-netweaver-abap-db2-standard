@@ -1,0 +1,2 @@
+- name: sapnwdb2.yml
+  ansible.builtin.import_playbook: sapnwdb2.yml
