@@ -68,7 +68,7 @@ sap_ci_instance_number = "00"
 ##########################################################
 
 kit_sapcar_file = "/storage/NW75DB2/SAPCAR_1010-70006178.EXE"
-kit_swpm_file =  "/storage/NW75DB2//SWPM10SP37_2-20009701.SAR"
+kit_swpm_file =  "/storage/NW75DB2/SWPM10SP37_2-20009701.SAR"
 kit_saphotagent_file = "/storage/NW75DB2/SAPHOSTAGENT51_51-20009394.SAR"
 kit_sapexe_file = "/storage/NW75DB2/SAPEXE_800-80002573.SAR"
 kit_sapexedb_file = "/storage/NW75DB2/SAPEXEDB_800-80002603.SAR"

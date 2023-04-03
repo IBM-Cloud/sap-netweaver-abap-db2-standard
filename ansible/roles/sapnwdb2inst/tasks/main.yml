@@ -22,7 +22,7 @@
 # SAP Note:
 # - 2570458 - DB6: Depooling report RUTPOADAPT fails with SQL -912 (v1)
 
-- name: Disable the registry setting DB2_AVOID_LOCK_ESCALATION - workaround from SAP Note 2570458
+- name: Attempt to disable the registry setting DB2_AVOID_LOCK_ESCALATION - workaround from SAP Note 2570458
   shell: "su - db2{{ sap_sid|lower }} -c 'db2set DB2_AVOID_LOCK_ESCALATION=FALSE'"
   register: db2_avlockesc
   retries: 1080
