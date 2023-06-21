@@ -3,6 +3,11 @@ variable "BASTION_FLOATING_IP" {
     description = "IP used to execute the remote script"
 }
 
+variable "ID_RSA_FILE_PATH" {
+    nullable = false
+    description = "Input your id_rsa private key file path in OpenSSH format."
+}
+
 variable "HOSTNAME" {
     type = string
     description = "VSI Hostname"

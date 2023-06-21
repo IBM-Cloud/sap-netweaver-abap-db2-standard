@@ -1,6 +1,6 @@
 resource "null_resource" "check-bastion-resources" {
   
-        depends_on = [ ibm_is_security_group_rule.inbound-sg-sch-ssh-rule , local_file.tf_id_rsa]
+        depends_on = [ ibm_is_security_group_rule.inbound-sg-sch-ssh-rule ]
 
         connection {
             type = "ssh"
@@ -55,7 +55,7 @@ resource "null_resource" "check-bastion-resources" {
          depends_on	= [ null_resource.check-bastion-resources ]
 
          provisioner "local-exec" {
-             command = "ssh -o 'StrictHostKeyChecking no' -i ansible/id_rsa root@${var.BASTION_FLOATING_IP} 'export HOSTNAME=${var.HOSTNAME}; timeout 5s /tmp/${var.HOSTNAME}.error.sh'"
+             command = "export ID_RSA_FILE_PATH=${var.ID_RSA_FILE_PATH}; ssh -o 'StrictHostKeyChecking no' -i $ID_RSA_FILE_PATH root@${var.BASTION_FLOATING_IP} 'export HOSTNAME=${var.HOSTNAME}; timeout 5s /tmp/${var.HOSTNAME}.error.sh'"
              on_failure = fail
          }
 

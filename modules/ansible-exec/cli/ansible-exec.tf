@@ -1,7 +1,7 @@
 resource "null_resource" "ansible-exec" {
 
   provisioner "local-exec" {
-    command = "ansible-playbook -i ansible/inventory.yml ansible/playbook.yml"
+    command = "ansible-playbook --private-key ${var.ID_RSA_FILE_PATH} -i ansible/inventory.yml ansible/${var.PLAYBOOK} "
   }
 
   provisioner "local-exec" {
@@ -12,3 +12,5 @@ resource "null_resource" "ansible-exec" {
        command = "sleep 20; rm -rf  ansible/*-vars.yml"
       }
 }
+
+

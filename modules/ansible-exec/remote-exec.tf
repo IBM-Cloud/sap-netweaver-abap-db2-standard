@@ -8,9 +8,15 @@ resource "null_resource" "ansible-exec" {
       timeout = "2m"
     }
 
+
     provisioner "file" {
       source      = "ansible"
       destination = "/tmp/ansible.${local.SAP_DEPLOYMENT}-${var.IP}"
+    }
+
+    provisioner "file" {
+      source      = "${var.ID_RSA_FILE_PATH}"
+      destination = "/tmp/ansible.${local.SAP_DEPLOYMENT}-${var.IP}/id_rsa"
     }
 
     provisioner "remote-exec" {
@@ -64,7 +70,7 @@ resource "null_resource" "ansible-exec" {
     }
 
     provisioner "local-exec" {
-          command = "ssh -o 'StrictHostKeyChecking no' -i ansible/id_rsa root@${var.BASTION_FLOATING_IP} 'export ANSIBLE_CONFIG=/tmp/ansible.${local.SAP_DEPLOYMENT}-${var.IP}/ansible.cfg; nohup ansible-playbook --private-key /tmp/ansible.${local.SAP_DEPLOYMENT}-${var.IP}/id_rsa -i /tmp/ansible.${local.SAP_DEPLOYMENT}-${var.IP}/inventory.yml /tmp/ansible.${local.SAP_DEPLOYMENT}-${var.IP}/${var.PLAYBOOK} > /tmp/ansible.${local.SAP_DEPLOYMENT}-${var.IP}.log 2>&1 &'"
+          command = "ssh -o 'StrictHostKeyChecking no' -i ${var.ID_RSA_FILE_PATH} root@${var.BASTION_FLOATING_IP} 'export ANSIBLE_CONFIG=/tmp/ansible.${local.SAP_DEPLOYMENT}-${var.IP}/ansible.cfg; nohup ansible-playbook --private-key /tmp/ansible.${local.SAP_DEPLOYMENT}-${var.IP}/id_rsa -i /tmp/ansible.${local.SAP_DEPLOYMENT}-${var.IP}/inventory.yml /tmp/ansible.${local.SAP_DEPLOYMENT}-${var.IP}/${var.PLAYBOOK} > /tmp/ansible.${local.SAP_DEPLOYMENT}-${var.IP}.log 2>&1 &'"
     }
 
 }
@@ -74,7 +80,7 @@ resource "null_resource" "check-ansible" {
     depends_on	= [ null_resource.ansible-exec ]
 
     provisioner "local-exec" {
-          command = "ssh -o 'StrictHostKeyChecking no' -i ansible/id_rsa root@${var.BASTION_FLOATING_IP} 'export IP=${var.IP}; export SAP_DEPLOYMENT=${local.SAP_DEPLOYMENT}; timeout 10m /tmp/${var.IP}.check.ansible.sh'"
+          command = "ssh -o 'StrictHostKeyChecking no' -i ${var.ID_RSA_FILE_PATH} root@${var.BASTION_FLOATING_IP} 'export IP=${var.IP}; export SAP_DEPLOYMENT=${local.SAP_DEPLOYMENT}; timeout 10m /tmp/${var.IP}.check.ansible.sh'"
           on_failure = continue
     }
 
@@ -85,7 +91,7 @@ resource "null_resource" "ansible-logs" {
     depends_on	= [ null_resource.check-ansible ]
 
     provisioner "local-exec" {
-          command = "ssh -o 'StrictHostKeyChecking no' -i ansible/id_rsa root@${var.BASTION_FLOATING_IP} 'export IP=${var.IP}; export SAP_DEPLOYMENT=${local.SAP_DEPLOYMENT}; timeout ${local.SCHEMATICS_TIMEOUT}m /tmp/${var.IP}.while.sh'"
+          command = "ssh -o 'StrictHostKeyChecking no' -i ${var.ID_RSA_FILE_PATH} root@${var.BASTION_FLOATING_IP} 'export IP=${var.IP}; export SAP_DEPLOYMENT=${local.SAP_DEPLOYMENT}; timeout ${local.SCHEMATICS_TIMEOUT}m /tmp/${var.IP}.while.sh'"
           on_failure = continue
     }
 
@@ -96,7 +102,7 @@ resource "null_resource" "ansible-logs1" {
     depends_on	= [ null_resource.ansible-logs ]
 
     provisioner "local-exec" {
-          command = "ssh -o 'StrictHostKeyChecking no' -i ansible/id_rsa root@${var.BASTION_FLOATING_IP} 'export IP=${var.IP}; export SAP_DEPLOYMENT=${local.SAP_DEPLOYMENT}; timeout ${local.SCHEMATICS_TIMEOUT}m /tmp/${var.IP}.while.sh'"
+          command = "ssh -o 'StrictHostKeyChecking no' -i ${var.ID_RSA_FILE_PATH} root@${var.BASTION_FLOATING_IP} 'export IP=${var.IP}; export SAP_DEPLOYMENT=${local.SAP_DEPLOYMENT}; timeout ${local.SCHEMATICS_TIMEOUT}m /tmp/${var.IP}.while.sh'"
           on_failure = continue
     }
 
@@ -107,7 +113,7 @@ resource "null_resource" "ansible-logs2" {
     depends_on	= [ null_resource.ansible-logs1 ]
 
     provisioner "local-exec" {
-          command = "ssh -o 'StrictHostKeyChecking no' -i ansible/id_rsa root@${var.BASTION_FLOATING_IP} 'export IP=${var.IP}; export SAP_DEPLOYMENT=${local.SAP_DEPLOYMENT}; timeout ${local.SCHEMATICS_TIMEOUT}m /tmp/${var.IP}.while.sh'"
+          command = "ssh -o 'StrictHostKeyChecking no' -i ${var.ID_RSA_FILE_PATH} root@${var.BASTION_FLOATING_IP} 'export IP=${var.IP}; export SAP_DEPLOYMENT=${local.SAP_DEPLOYMENT}; timeout ${local.SCHEMATICS_TIMEOUT}m /tmp/${var.IP}.while.sh'"
           on_failure = continue
     }
 
@@ -118,7 +124,7 @@ resource "null_resource" "ansible-logs3" {
     depends_on	= [ null_resource.ansible-logs2 ]
 
     provisioner "local-exec" {
-          command = "ssh -o 'StrictHostKeyChecking no' -i ansible/id_rsa root@${var.BASTION_FLOATING_IP} 'export IP=${var.IP}; export SAP_DEPLOYMENT=${local.SAP_DEPLOYMENT}; timeout ${local.SCHEMATICS_TIMEOUT}m /tmp/${var.IP}.while.sh'"
+          command = "ssh -o 'StrictHostKeyChecking no' -i ${var.ID_RSA_FILE_PATH} root@${var.BASTION_FLOATING_IP} 'export IP=${var.IP}; export SAP_DEPLOYMENT=${local.SAP_DEPLOYMENT}; timeout ${local.SCHEMATICS_TIMEOUT}m /tmp/${var.IP}.while.sh'"
           on_failure = continue
     }
 
@@ -129,7 +135,7 @@ resource "null_resource" "ansible-logs4" {
     depends_on	= [ null_resource.ansible-logs3 ]
 
     provisioner "local-exec" {
-          command = "ssh -o 'StrictHostKeyChecking no' -i ansible/id_rsa root@${var.BASTION_FLOATING_IP} 'export IP=${var.IP}; export SAP_DEPLOYMENT=${local.SAP_DEPLOYMENT}; timeout ${local.SCHEMATICS_TIMEOUT}m /tmp/${var.IP}.while.sh'"
+          command = "ssh -o 'StrictHostKeyChecking no' -i ${var.ID_RSA_FILE_PATH} root@${var.BASTION_FLOATING_IP} 'export IP=${var.IP}; export SAP_DEPLOYMENT=${local.SAP_DEPLOYMENT}; timeout ${local.SCHEMATICS_TIMEOUT}m /tmp/${var.IP}.while.sh'"
           on_failure = continue
     }
 
@@ -157,7 +163,7 @@ resource "null_resource" "ansible-errors" {
     depends_on	= [ null_resource.ansible-delete-sensitive-data ]
 
     provisioner "local-exec" {
-          command = "ssh -o 'StrictHostKeyChecking no' -i ansible/id_rsa root@${var.BASTION_FLOATING_IP} 'export IP=${var.IP}; export SAP_DEPLOYMENT=${local.SAP_DEPLOYMENT}; tail -50 /tmp/ansible.$SAP_DEPLOYMENT-$IP.log; timeout 10s /tmp/${var.IP}.error.sh'"
+          command = "ssh -o 'StrictHostKeyChecking no' -i ${var.ID_RSA_FILE_PATH} root@${var.BASTION_FLOATING_IP} 'export IP=${var.IP}; export SAP_DEPLOYMENT=${local.SAP_DEPLOYMENT}; tail -50 /tmp/ansible.$SAP_DEPLOYMENT-$IP.log; timeout 10s /tmp/${var.IP}.error.sh'"
           on_failure = fail
     }
 
@@ -168,7 +174,7 @@ resource "null_resource" "ansible-timeout-checking" {
     depends_on	= [ null_resource.ansible-errors  ]
 
     provisioner "local-exec" {
-          command = "ssh -o 'StrictHostKeyChecking no' -i ansible/id_rsa root@${var.BASTION_FLOATING_IP} 'export IP=${var.IP}; export SAP_DEPLOYMENT=${local.SAP_DEPLOYMENT}; export ANSIBLE_TIMEOUT=${local.SCHEMATICS_TIMEOUT}; timeout 10s /tmp/${var.IP}.timeout.ansible.sh'"
+          command = "ssh -o 'StrictHostKeyChecking no' -i ${var.ID_RSA_FILE_PATH} root@${var.BASTION_FLOATING_IP} 'export IP=${var.IP}; export SAP_DEPLOYMENT=${local.SAP_DEPLOYMENT}; export ANSIBLE_TIMEOUT=${local.SCHEMATICS_TIMEOUT}; timeout 10s /tmp/${var.IP}.timeout.ansible.sh'"
           on_failure = fail
     }
 

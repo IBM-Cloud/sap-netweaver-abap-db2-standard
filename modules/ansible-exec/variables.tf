@@ -18,6 +18,10 @@ variable "private_ssh_key" {
     description = "Private ssh key"
 }
 
+variable "ID_RSA_FILE_PATH" {
+    nullable = false
+    description = "Input your id_rsa private key file path in OpenSSH format."
+}
 
 # Developer settings:
 locals {

@@ -32,6 +32,10 @@ SSH_KEYS = [""]
 # List of SSH Keys UUIDs that are allowed to SSH as root to the VSI. The SSH Keys should be created for the same region as the VSI. The list of available SSH Keys UUIDs: https://cloud.ibm.com/vpc-ext/compute/sshKeys
 # Example: SSH_KEYS = ["r010-8f72b994-c17f-4500-af8f-d05680374t3c", "r011-8f72v884-c17f-4500-af8f-d05900374t3c"]
 
+ID_RSA_FILE_PATH = "ansible/id_rsa_abap_db2_std"
+# Input your id_rsa private key file path in OpenSSH format with 0600 permissions.
+# This private key it is used only during the terraform provisioning and it is recommended to be changed after the SAP deployment.
+
 ##########################################################
 # VSI variables:
 ##########################################################
