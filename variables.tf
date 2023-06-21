@@ -48,10 +48,9 @@ variable "BASTION_FLOATING_IP" {
 variable "RESOURCE_GROUP" {
   type        = string
   description = <<EOF
-  The name of an EXISTING Resource Group for VSIs and Volumes resources.
-  Default value: "Default".
-  The list of Resource Groups is available here https://cloud.ibm.com/account/resource-groups.EOF
-  EOF
+    The name of an EXISTING Resource Group for VSIs and Volumes resources.
+    Default value: "Default". The list of Resource Groups is available here https://cloud.ibm.com/account/resource-groups
+	EOF
   default     = "Default"
 }
 
