@@ -1,11 +1,14 @@
 variable "private_ssh_key" {
 	type		= string
-	description = "Input your id_rsa private key pair content in OpenSSH format"
 	nullable = false
 	validation {
 	condition = length(var.private_ssh_key) >= 64 && var.private_ssh_key != null && length(var.private_ssh_key) != 0 || contains(["n.a"], var.private_ssh_key )
 	error_message = "The content for private_ssh_key variable must be completed in OpenSSH format."
       }
+	description = 	<<EOF
+    Input your id_rsa private key content in OpenSSH format (Sensitive* value). 
+	This private key should be used only during the terraform provisioning and it is recommended to be changed after the SAP deployment.
+	EOF
 }
 
 variable "ID_RSA_FILE_PATH" {
@@ -140,12 +143,12 @@ variable "IMAGE" {
 	type		= string
 	description = 	<<EOF
 	The OS image used for the VSI. A list of images is available here https://cloud.ibm.com/docs/vpc?topic=vpc-about-images
-	Supported images: ibm-sles-15-3-amd64-sap-applications-5, ibm-redhat-8-4-amd64-sap-applications-4, ibm-redhat-7-6-amd64-sap-applications-3. Default value: ibm-redhat-8-4-amd64-sap-applications-4
+	Supported images: ibm-sles-15-3-amd64-sap-applications-5, ibm-sles-15-4-amd64-sap-applications-4, ibm-redhat-8-4-amd64-sap-applications-4, ibm-redhat-8-6-amd64-sap-applications-2. Default value: ibm-redhat-8-6-amd64-sap-applications-2
 	EOF
 	default		= "ibm-redhat-8-4-amd64-sap-applications-4"
 	validation {
-		condition     = length(regexall("^(ibm-redhat-7-6-amd64-sap-applications|ibm-redhat-8-4-amd64-sap-applications|ibm-sles-15-3-amd64-sap-applications)-[0-9][0-9]*", var.IMAGE)) > 0
-		error_message = "The OS SAP IMAGE must be one of  \"ibm-sles-15-3-amd64-sap-applications-x\", \"ibm-redhat-8-4-amd64-sap-applications-x\" or \"ibm-redhat-7-6-amd64-sap-applications-x\"."
+		condition     = length(regexall("^(ibm-redhat-8-6-amd64-sap-applications|ibm-redhat-8-4-amd64-sap-applications|ibm-sles-15-3-amd64-sap-applications|ibm-sles-15-4-amd64-sap-applications)-[0-9][0-9]*", var.IMAGE)) > 0
+		error_message = "The OS SAP IMAGE must be one of  \"ibm-sles-15-3-amd64-sap-applications-x\", \"ibm-sles-15-4-amd64-sap-applications-x\",  \"ibm-redhat-8-4-amd64-sap-applications-x\" or \"ibm-redhat-8-6-amd64-sap-applications-x\"."
 	}
 }
 
@@ -273,7 +276,7 @@ variable "kit_export_dir" {
 variable "kit_db2_dir" {
 	type		= string
 	description = 	<<EOF
-	Path to DB2 LUW 11.5 MP6 FP0 SAP2 Linux on x86_64 64bit dir for Red Hat 8.4 and Suse 15 SP3 and path to DB2 LUW 10.5 FP7SAP2 Linux on x86_64 64bit dir for Red Hat 7.6
+	Path to DB2 LUW 11.5 MP6 FP0 SAP2 Linux on x86_64 64bit dir for Red Hat 8.4, 8.6 and Suse 15 SP3, SP4
 	The archive downloaded from SAP Support Portal must be extracted and the path provided to this parameter must contain LABEL.ASC file. Default value: /storage/NW75DB2/51055138/DB2_FOR_LUW_11.5_MP6_FP0SAP2_LINUX_
 	EOF
 	default		= "/storage/NW75DB2/51055138/DB2_FOR_LUW_11.5_MP6_FP0SAP2_LINUX_"
@@ -282,7 +285,7 @@ variable "kit_db2_dir" {
 variable "kit_db2client_dir" {
 	type		= string
 	description = 	<<EOF
-	Path to DB2 LUW 11.5 MP6 FP0 SAP2 RDBMS Client dir for Red Hat 8.4 and Suse 15 SP3 and path to DB2 LUW 10.5 FP7SAP2 RDBMS Client dir for Red Hat 7.6
+	Path to DB2 LUW 11.5 MP6 FP0 SAP2 RDBMS Client dir for Red Hat 8.4, 8.6 and Suse 15 SP3, SP4.
 	The archive downloaded from SAP Support Portal must be extracted and the path provided to this parameter must contain LABEL.ASC file. Default value: /storage/NW75DB2/51055140	
 	EOF
 	default		= "/storage/NW75DB2/51055140"

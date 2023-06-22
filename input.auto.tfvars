@@ -47,8 +47,8 @@ HOSTNAME = "db2saphost1"
 PROFILE = "bx2-4x16"
 # The DB VSI profile. Supported profiles for DB VSI: mx2-16x128. The list of available profiles: https://cloud.ibm.com/docs/vpc?topic=vpc-profiles&interface=ui
 
-IMAGE = "ibm-redhat-8-4-amd64-sap-applications-4"
-# OS image for SAP APP VSI. Supported OS images for APP VSIs: ibm-sles-15-3-amd64-sap-applications-5, ibm-redhat-8-4-amd64-sap-applications-4, ibm-redhat-7-6-amd64-sap-applications-3.
+IMAGE = "ibm-redhat-8-6-amd64-sap-applications-2"
+# OS image for SAP APP VSI. Supported OS images for APP VSIs: ibm-sles-15-3-amd64-sap-applications-5, ibm-sles-15-4-amd64-sap-applications-4, ibm-redhat-8-4-amd64-sap-applications-4, ibm-redhat-8-6-amd64-sap-applications-2.
 # The list of available VPC Operating Systems supported by SAP: SAP note '2927211 - SAP Applications on IBM Virtual Private Cloud (VPC) Infrastructure environment' https://launchpad.support.sap.com/#/notes/2927211; The list of all available OS images: https://cloud.ibm.com/docs/vpc?topic=vpc-about-images
 # Example: IMAGE = "ibm-sles-15-3-amd64-sap-applications-5"
 
@@ -82,6 +82,3 @@ kit_export_dir = "/storage/NW75DB2/51050829"
 # On Red Hat 8 and SLES 15
 kit_db2_dir = "/storage/NW75DB2/51055138/DB2_FOR_LUW_11.5_MP6_FP0SAP2_LINUX_"
 kit_db2client_dir = "/storage/NW75DB2/51055140"
-# On Red Hat 7.6
-# kit_db2_dir = "/storage/NW75DB2/51051007/DB2_FOR_LUW_10.5_FP7SAP2_LINUX_"
-# kit_db2client_dir = "/storage/NW75DB2/51051049"
