@@ -5,9 +5,9 @@ variable "private_ssh_key" {
 	EOF
 	nullable = false
 	validation {
-	condition = length(var.private_ssh_key) >= 64 && var.private_ssh_key != null && length(var.private_ssh_key) != 0 || contains(["n.a"], var.private_ssh_key )
-	error_message = "The content for private_ssh_key variable must be completed in OpenSSH format."
-      }
+		condition = length(var.private_ssh_key) >= 64 && var.private_ssh_key != null && length(var.private_ssh_key) != 0 || contains(["n.a"], var.private_ssh_key )
+		error_message = "The content for private_ssh_key variable must be completed in OpenSSH format."
+    }
 }
 
 variable "ID_RSA_FILE_PATH" {
@@ -46,12 +46,12 @@ variable "BASTION_FLOATING_IP" {
 }
 
 variable "RESOURCE_GROUP" {
-  type        = string
-  description = <<EOF
-    The name of an EXISTING Resource Group for VSIs and Volumes resources.
-    Default value: "Default". The list of Resource Groups is available here https://cloud.ibm.com/account/resource-groups
+  	type        = string
+  	description = <<EOF
+  	The name of an EXISTING Resource Group for VSIs and Volumes resources.
+  	Default value: "Default". The list of Resource Groups is available here https://cloud.ibm.com/account/resource-groups
 	EOF
-  default     = "Default"
+  	default     = "Default"
 }
 
 variable "REGION" {
@@ -119,7 +119,7 @@ variable "SECURITY_GROUP" {
 variable "HOSTNAME" {
 	type		= string
 	description = 	<<EOF
-		The Hostname for the VSI. The hostname should be up to 13 characters as required by SAP. For more information on rules regarding hostnames for SAP systems, check SAP Note 611361: Hostnames of SAP ABAP Platform servers
+	The Hostname for the VSI. The hostname should be up to 13 characters as required by SAP. For more information on rules regarding hostnames for SAP systems, check SAP Note 611361: Hostnames of SAP ABAP Platform servers
 	EOF
 	default		= "db2saphost1"	
 	validation {
