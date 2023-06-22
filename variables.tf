@@ -1,13 +1,11 @@
 variable "private_ssh_key" {
 	type		= string
-	description = 	<<EOF
-    Input your id_rsa private key pair content in OpenSSH format (Sensitive* value). This private key should be used only during the terraform provisioning and it is recommended to be changed after the SAP deployment.
-	EOF
+	description = "Input your id_rsa private key pair content in OpenSSH format"
 	nullable = false
 	validation {
-		condition = length(var.private_ssh_key) >= 64 && var.private_ssh_key != null && length(var.private_ssh_key) != 0 || contains(["n.a"], var.private_ssh_key )
-		error_message = "The content for private_ssh_key variable must be completed in OpenSSH format."
-    }
+	condition = length(var.private_ssh_key) >= 64 && var.private_ssh_key != null && length(var.private_ssh_key) != 0 || contains(["n.a"], var.private_ssh_key )
+	error_message = "The content for private_ssh_key variable must be completed in OpenSSH format."
+      }
 }
 
 variable "ID_RSA_FILE_PATH" {
