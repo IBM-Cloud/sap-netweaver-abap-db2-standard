@@ -8,8 +8,8 @@ This automation solution is designed for the deployment of [**Single Tier SAP Ne
 
 - [1.1 Installation media](#11-installation-media)
 - [1.2 VSI Configuration](#12-vsi-configuration)
-- [1.3 VPC Configuration](#12-vsi-configuration)
-- [1.4 Files description and structure](#12-vsi-configuration)
+- [1.3 VPC Configuration](#13-vpc-configuration)
+- [1.4 Files description and structure](#14-files-description-and-structure)
 - [2.1 Executing the deployment of **Single Tier SAP Netweaver ABAP Stack with Db2** in GUI (Schematics)](#21-executing-the-deployment-of-single-tier-sap-netweaver-abap-stack-with-db2-in-gui-schematics)
 - [2.2 Executing the deployment of **Single Tier SAP Netweaver ABAP Stack with Db2** in CLI](#22-executing-the-deployment-of-single-tier-sap-netweaver-abap-stack-with-db2-in-cli)
 - [3.1 Related links](#31-related-links)
@@ -112,35 +112,35 @@ kit_db2client_dir | Path to DB2 LUW 11.5 MP6 FP0 SAP2 RDBMS Client dir for Red H
 
 ### Steps to follow:
 
-1.  Make sure that you have the [required IBM Cloud IAM
-    permissions](https://cloud.ibm.com/docs/vpc?topic=vpc-managing-user-permissions-for-vpc-resources) to
-    create and work with VPC infrastructure and you are [assigned the
+1.  Make sure that you have the [required IBM Cloud IAM
+    permissions](https://cloud.ibm.com/docs/vpc?topic=vpc-managing-user-permissions-for-vpc-resources) to
+    create and work with VPC infrastructure and you are [assigned the
     correct
-    permissions](https://cloud.ibm.com/docs/schematics?topic=schematics-access) to
+    permissions](https://cloud.ibm.com/docs/schematics?topic=schematics-access) to
     create the workspace in Schematics and deploy resources.
 2.  [Generate an SSH
     key](https://cloud.ibm.com/docs/vpc?topic=vpc-ssh-keys).
     The SSH key is required to access the provisioned VPC virtual server
     instances via the bastion host. After you have created your SSH key,
-    make sure to [upload this SSH key to your IBM Cloud
-    account](https://cloud.ibm.com/docs/vpc-on-classic-vsi?topic=vpc-on-classic-vsi-managing-ssh-keys#managing-ssh-keys-with-ibm-cloud-console) in
+    make sure to [upload this SSH key to your IBM Cloud
+    account](https://cloud.ibm.com/docs/vpc-on-classic-vsi?topic=vpc-on-classic-vsi-managing-ssh-keys#managing-ssh-keys-with-ibm-cloud-console) in
     the VPC region and resource group where you want to deploy the SAP solution
 3.  Create the Schematics workspace:
     1.  From the IBM Cloud menu
-    select [Schematics](https://cloud.ibm.com/schematics/overview).
-       - Click Create a workspace.
+    select [Schematics](https://cloud.ibm.com/schematics/overview).
+       - Click Create a workspace.
        - Enter a name for your workspace.
-       - Click Create to create your workspace.
-    2.  On the workspace **Settings** page, enter the URL of this solution in the Schematics examples Github repository.
+       - Click Create to create your workspace.
+    2.  On the workspace **Settings** page, enter the URL of this solution in the Schematics examples Github repository.
      - Select the latest Terraform version.
-     - Click **Save template information**.
-     - In the **Input variables** section, review the default input variables and provide alternatives if desired.
-    - Click **Save changes**.
+     - Click **Save template information**.
+     - In the **Input variables** section, review the default input variables and provide alternatives if desired.
+    - Click **Save changes**.
 
-4.  From the workspace **Settings** page, click **Generate plan** 
-5.  Click **View log** to review the log files of your Terraform
+4.  From the workspace **Settings** page, click **Generate plan** 
+5.  Click **View log** to review the log files of your Terraform
     execution plan.
-6.  Apply your Terraform template by clicking **Apply plan**.
+6.  Apply your Terraform template by clicking **Apply plan**.
 7.  Review the log file to ensure that no errors occurred during the
     provisioning, modification, or deletion process.
 
@@ -181,19 +181,19 @@ ZONE = ""
 # Edit the variable value with your deployment Zone.
 # Example: ZONE = "eu-de-1"
 
-VPC = "sap"
+VPC = ""
 # EXISTING VPC, previously created by the user in the same region as the VSI. The list of available VPCs: https://cloud.ibm.com/vpc-ext/network/vpcs
 # Example: VPC = "ic4sap"
 
-SECURITY_GROUP = "sap-securitygroup"
+SECURITY_GROUP = ""
 # EXISTING Security group, previously created by the user in the same VPC. The list of available Security Groups: https://cloud.ibm.com/vpc-ext/network/securityGroups
 # Example: SECURITY_GROUP = "ic4sap-securitygroup"
 
-RESOURCE_GROUP = "Default"
+RESOURCE_GROUP = ""
 # EXISTING Resource group, previously created by the user. The list of available Resource Groups: https://cloud.ibm.com/account/resource-groups
 # Example: RESOURCE_GROUP = "wes-automation"
 
-SUBNET = "sap-subnet" # Default value
+SUBNET = ""
 # EXISTING Subnet in the same region and zone as the VSI, previously created by the user. The list of available Subnets: https://cloud.ibm.com/vpc-ext/network/subnets
 # Example: SUBNET = "ic4sap-subnet"
 
@@ -201,7 +201,7 @@ SSH_KEYS = [""]
 # List of SSH Keys UUIDs that are allowed to SSH as root to the VSI. The SSH Keys should be created for the same region as the VSI. The list of available SSH Keys UUIDs: https://cloud.ibm.com/vpc-ext/compute/sshKeys
 # Example: SSH_KEYS = ["r010-8f72b994-c17f-4500-af8f-d05680374t3c", "r011-8f72v884-c17f-4500-af8f-d05900374t3c"]
  
-ID_RSA_FILE_PATH = "ansible/id_rsa_abap_db2_std"
+ID_RSA_FILE_PATH = ""
 # Input your id_rsa private key file path in OpenSSH format with 0600 permissions.
 # This private key it is used only during the terraform provisioning and it is recommended to be changed after the SAP deployment.
 # Can be used relative or absolut paths. Examples: "~/.ssh/id_rsa_abap_db2_std" or "/root/.ssh/id_rsa".

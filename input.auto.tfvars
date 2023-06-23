@@ -12,11 +12,11 @@ ZONE = ""
 # Edit the variable value with your deployment Zone.
 # Example: ZONE = "eu-de-1"
 
-VPC = "sap"
+VPC = ""
 # EXISTING VPC, previously created by the user in the same region as the VSI. The list of available VPCs: https://cloud.ibm.com/vpc-ext/network/vpcs
 # Example: VPC = "ic4sap"
 
-SECURITY_GROUP = "sap-securitygroup"
+SECURITY_GROUP = ""
 # EXISTING Security group, previously created by the user in the same VPC. The list of available Security Groups: https://cloud.ibm.com/vpc-ext/network/securityGroups
 # Example: SECURITY_GROUP = "ic4sap-securitygroup"
 
@@ -24,7 +24,7 @@ RESOURCE_GROUP = "Default"
 # EXISTING Resource group, previously created by the user. The list of available Resource Groups: https://cloud.ibm.com/account/resource-groups
 # Example: RESOURCE_GROUP = "wes-automation"
 
-SUBNET = "sap-subnet" # Default value
+SUBNET = ""
 # EXISTING Subnet in the same region and zone as the VSI, previously created by the user. The list of available Subnets: https://cloud.ibm.com/vpc-ext/network/subnets
 # Example: SUBNET = "ic4sap-subnet"
 
@@ -32,9 +32,11 @@ SSH_KEYS = [""]
 # List of SSH Keys UUIDs that are allowed to SSH as root to the VSI. The SSH Keys should be created for the same region as the VSI. The list of available SSH Keys UUIDs: https://cloud.ibm.com/vpc-ext/compute/sshKeys
 # Example: SSH_KEYS = ["r010-8f72b994-c17f-4500-af8f-d05680374t3c", "r011-8f72v884-c17f-4500-af8f-d05900374t3c"]
 
-ID_RSA_FILE_PATH = "ansible/id_rsa_abap_db2_std"
-# Input your id_rsa private key file path in OpenSSH format with 0600 permissions.
+ID_RSA_FILE_PATH = "ansible/id_rsa"
+# Input your existing id_rsa private key file path in OpenSSH format with 0600 permissions.
 # This private key it is used only during the terraform provisioning and it is recommended to be changed after the SAP deployment.
+# It must contain the relative or absoute path from your Bastion.
+# Examples: "ansible/id_rsa_abap_db2_std" , "~/.ssh/id_rsa_abap_db2_std" , "/root/.ssh/id_rsa".
 
 ##########################################################
 # VSI variables:
