@@ -20,6 +20,7 @@ sapnw_required_packages:
   - nfs-utils
   - pam-32bit
   - binutils
+  - libnuma1
 
 sapnw_required_configurations:
   - "repository_SLES"

@@ -17,7 +17,7 @@ variable "ID_RSA_FILE_PATH" {
 
 variable "SSH_KEYS" {
 	type		= list(string)
-	description = "List of SSH Keys UUIDs that are allowed to SSH as root to the VSI. Can contain one or more IDs. The list of SSH Keys is available here https://cloud.ibm.com/vpc-ext/compute/sshKeys. Sample input (use your own SSH UUIDs from IBM Cloud): [ \"r010-57bfc315-f9e5-46bf-bf61-d87a24a9ce7a\" , \"r010-3fcd9fe7-d4a7-41ce-8bb3-d96e936b2c7e\" ]"
+	description = "List of SSH Keys UUIDs that are allowed to SSH as root to the VSI. Can contain one or more IDs. The list of SSH Keys is available here https://cloud.ibm.com/vpc-ext/compute/sshKeys. Sample input (use your own SSH UUIDs from IBM Cloud): [ \"r010-57bfc315-f9e5-46bf-bf61-d87a24a9ce7a\" , \"r010-3fcd9fe7-d4a7-41ce-8bb3-d96e936b2c7e\" ]."
 	validation {
 		condition     = var.SSH_KEYS == [] ? false : true && var.SSH_KEYS == [""] ? false : true
 		error_message = "At least one SSH KEY is needed to be able to access the VSI."
@@ -37,14 +37,14 @@ variable "BASTION_FLOATING_IP" {
 
 variable "RESOURCE_GROUP" {
   	type        = string
-  	description = "The name of an EXISTING Resource Group for VSIs and Volumes resources. Default value: \"Default\". The list of Resource Groups is available here https://cloud.ibm.com/account/resource-groups "
+  	description = "The name of an EXISTING Resource Group for VSIs and Volumes resources. Default value: \"Default\". The list of Resource Groups is available here https://cloud.ibm.com/account/resource-groups. "
   	default     = "Default"
 }
 
 
 variable "REGION" {
 	type		= string
-	description	= 	"The cloud region where to deploy the solution. The regions and zones for VPC are listed here https://cloud.ibm.com/docs/containers?topic=containers-regions-and-zones#zones-vpc . Review supported locations in IBM Cloud Schematics here https://cloud.ibm.com/docs/containers?topic=containers-regions-and-zones#zones-vpc . Sample value: \"eu-de\"."
+	description	= 	"The cloud region where to deploy the solution. The regions and zones for VPC are listed here https://cloud.ibm.com/docs/containers?topic=containers-regions-and-zones#zones-vpc. Review supported locations in IBM Cloud Schematics here https://cloud.ibm.com/docs/containers?topic=containers-regions-and-zones#zones-vpc. Sample value: \"eu-de\"."
 	validation {
 		condition     = contains(["au-syd", "jp-osa", "jp-tok", "eu-de", "eu-gb", "ca-tor", "us-south", "us-east", "br-sao"], var.REGION )
 		error_message = "For CLI deployments, the REGION must be one of: au-syd, jp-osa, jp-tok, eu-de, eu-gb, ca-tor, us-south, us-east, br-sao. \n For Schematics, the REGION must be one of: eu-de, eu-gb, us-south, us-east."
@@ -62,7 +62,7 @@ variable "ZONE" {
 
 variable "VPC" {
 	type		= string
-	description = 	"The name of an EXISTING VPC. The list of VPCs is available here https://cloud.ibm.com/vpc-ext/network/vpcs "
+	description = 	"The name of an EXISTING VPC. The list of VPCs is available here https://cloud.ibm.com/vpc-ext/network/vpcs. "
 	validation {
 		condition     = length(regexall("^([a-z]|[a-z][-a-z0-9]*[a-z0-9]|[0-9][-a-z0-9]*([a-z]|[-a-z][-a-z0-9]*[a-z0-9]))$", var.VPC)) > 0
 		error_message = "The VPC name is not valid."
@@ -71,7 +71,7 @@ variable "VPC" {
 
 variable "SUBNET" {
 	type		= string
-	description = 	"The name of an EXISTING Subnet. The list of Subnets is available here https://cloud.ibm.com/vpc-ext/network/subnets "
+	description = 	"The name of an EXISTING Subnet. The list of Subnets is available here https://cloud.ibm.com/vpc-ext/network/subnets. "
 	validation {
 		condition     = length(regexall("^([a-z]|[a-z][-a-z0-9]*[a-z0-9]|[0-9][-a-z0-9]*([a-z]|[-a-z][-a-z0-9]*[a-z0-9]))$", var.SUBNET)) > 0
 		error_message = "The SUBNET name is not valid."
@@ -80,7 +80,7 @@ variable "SUBNET" {
 
 variable "SECURITY_GROUP" {
 	type		= string
-	description = "The name of an EXISTING Security group. The list of Security Groups is available here https://cloud.ibm.com/vpc-ext/network/securityGroups "
+	description = "The name of an EXISTING Security group. The list of Security Groups is available here https://cloud.ibm.com/vpc-ext/network/securityGroups. "
 	validation {
 		condition     = length(regexall("^([a-z]|[a-z][-a-z0-9]*[a-z0-9]|[0-9][-a-z0-9]*([a-z]|[-a-z][-a-z0-9]*[a-z0-9]))$", var.SECURITY_GROUP)) > 0
 		error_message = "The SECURITY_GROUP name is not valid."
@@ -99,13 +99,13 @@ variable "HOSTNAME" {
 
 variable "PROFILE" {
 	type		= string
-	description = "A list of profiles is available here https://cloud.ibm.com/docs/vpc?topic=vpc-profiles . For more information about supported DB/OS and IBM Gen 2 Virtual Server Instances (VSI), check SAP Note 2927211: SAP Applications on IBM Virtual Private Cloud. Default value: \"bx2-4x16\"."
+	description = "A list of profiles is available here https://cloud.ibm.com/docs/vpc?topic=vpc-profiles. For more information about supported DB/OS and IBM Gen 2 Virtual Server Instances (VSI), check SAP Note 2927211: SAP Applications on IBM Virtual Private Cloud. Default value: \"bx2-4x16\"."
 	default		= "bx2-4x16"
 }
 
 variable "IMAGE" {
 	type		= string
-	description = 	"The OS image used for the VSI. A list of images is available here https://cloud.ibm.com/docs/vpc?topic=vpc-about-images . Supported images: ibm-sles-15-3-amd64-sap-applications-5, ibm-sles-15-4-amd64-sap-applications-4, ibm-redhat-8-4-amd64-sap-applications-4, ibm-redhat-8-6-amd64-sap-applications-2. Default value: \"ibm-redhat-8-6-amd64-sap-applications-2\". "
+	description = 	"The OS image used for the VSI. A list of images is available here https://cloud.ibm.com/docs/vpc?topic=vpc-about-images. Supported images: ibm-sles-15-3-amd64-sap-applications-5, ibm-sles-15-4-amd64-sap-applications-4, ibm-redhat-8-4-amd64-sap-applications-4, ibm-redhat-8-6-amd64-sap-applications-2. Default value: \"ibm-redhat-8-6-amd64-sap-applications-2\". "
 	default		= "ibm-redhat-8-4-amd64-sap-applications-4"
 	validation {
 		condition     = length(regexall("^(ibm-redhat-8-6-amd64-sap-applications|ibm-redhat-8-4-amd64-sap-applications|ibm-sles-15-3-amd64-sap-applications|ibm-sles-15-4-amd64-sap-applications)-[0-9][0-9]*", var.IMAGE)) > 0
@@ -130,7 +130,7 @@ variable "sap_sid" {
 
 variable "sap_ci_instance_number" {
 	type		= string
-	description = " Technical identifier for internal processes of CI. Default value: \"00\"."
+	description = "Technical identifier for internal processes of CI. Default value: \"00\"."
 	default		= "00"
 	validation {
 		condition     = var.sap_ci_instance_number >= 0 && var.sap_ci_instance_number <=97
@@ -214,6 +214,6 @@ variable "kit_db2_dir" {
 
 variable "kit_db2client_dir" {
 	type		= string
-	description = 	"Path to DB2 LUW 11.5 MP6 FP0 SAP2 RDBMS Client dir for Red Hat 8.4, 8.6 and Suse 15 SP3, SP4.	The archive downloaded from SAP Support Portal must be extracted and the path provided to this parameter must contain LABEL.ASC file. Default value: \"/storage/NW75DB2/51055140\"."
+	description = 	"Path to DB2 LUW 11.5 MP6 FP0 SAP2 RDBMS Client dir for Red Hat 8.4, 8.6 and Suse 15 SP3, SP4. The archive downloaded from SAP Support Portal must be extracted and the path provided to this parameter must contain LABEL.ASC file. Default value: \"/storage/NW75DB2/51055140\"."
 	default		= "/storage/NW75DB2/51055140"
 }
