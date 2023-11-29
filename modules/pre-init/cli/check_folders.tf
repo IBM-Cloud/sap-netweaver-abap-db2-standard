@@ -1,8 +1,8 @@
 locals {
   folder_list = [
-    "${var.kit_export_dir}",
-    "${var.kit_db2_dir}",
-    "${var.kit_db2client_dir}"
+    "${var.KIT_EXPORT_DIR}",
+    "${var.KIT_DB2_DIR}",
+    "${var.KIT_DB2CLIENT_DIR}"
   ]
 }
 

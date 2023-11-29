@@ -15,7 +15,7 @@ saps_kit:
     saps_dest: "{{ sap_kit }}/sapexe.sar"
   - saps_src: "{{ kit_sapexedb_file }}"
     saps_dest: "{{ sap_kit }}/sapexedb.sar"
-  - saps_src: "{{ kit_saphotagent_file }}"
+  - saps_src: "{{ kit_saphostagent_file }}"
     saps_dest: "{{ sap_kit }}/saphotagent.sar"
   - saps_src: "{{ kit_igsexe_file }}"
     saps_dest: "{{ sap_kit }}/igsexe.sar"    
